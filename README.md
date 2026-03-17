@@ -4,16 +4,16 @@ Persistent structured memory for Claude Code. No infrastructure required — jus
 
 ## Poor Man's Memory
 
-AI coding agents forget everything between sessions. Your decisions, preferences, lessons learned, and project context — gone. Every new conversation starts from zero. You repeat yourself. The agent makes the same mistakes. Context that took hours to build evaporates when the session ends.
+AI coding agents have shallow memory. Claude Code persists some context between sessions — preferences, feedback, project notes — but it's flat summaries in a size-capped index. No structure, no relationships, no enrichment. Nuance gets compressed out. Decisions lose their rationale. Lessons lose their context. The agent remembers *that* something happened, but not *why it mattered*.
 
 **Poor Man's Memory** fixes this. It's a structured memory system for Claude Code that persists across sessions using nothing but markdown files and git. No databases, no APIs, no infrastructure to maintain. Clone a repo, say "init memory", and your agent starts remembering.
 
 **Built for:** developers using Claude Code (CLI or IDE) who want their agent to accumulate knowledge over time — across sessions, across days, across the life of a project.
 
 **What it solves:**
-- Agent amnesia between sessions
-- Repeated context-setting at the start of every conversation
-- Lost decisions, forgotten preferences, repeated mistakes
+- Shallow, unstructured memory that loses nuance over time
+- Repeated context-setting because flat summaries aren't enough
+- Decisions without rationale, preferences without context, lessons without detail
 - No audit trail of what the agent knew and when
 
 ## What It Does
@@ -122,7 +122,7 @@ Memory operations run in **agents** (subprocesses), never in the main context wi
 
 Nominex is the memory layer for AI agents.
 
-AI agents reset every session. Context vanishes, preferences disappear, and every conversation starts from zero. Nominex builds the infrastructure that makes agents smarter over time, not just bigger per-request.
+AI agents have memory, but it's shallow — flat summaries that lose depth over time. Nominex builds the deep memory infrastructure that makes agents structurally smarter, not just bigger per-request.
 
 Poor Man's Memory is the zero-infrastructure starting point — structured markdown and git. For teams that need semantic search, shared memory across agents, and automated enrichment, that's where [Nominex](https://github.com/NominexHQ) comes in.
 
