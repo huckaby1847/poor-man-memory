@@ -191,6 +191,8 @@ Replace `<skill-base>` with the actual skill base directory path.
 
 **When:** New information emerges that should persist (see trigger table below).
 
+**Pre-check — Hydrate template-only files:** Before dispatching the maintain agent, check all active files for template-only status (strip blank lines, headings, comments, table headers — if 0 content lines remain, it's template-only). If any active files are template-only AND at least 3 other files are populated, dispatch Phase 5 (Hydrate) for each template-only file first. This ensures files that were empty since init get populated from existing context before the maintain cycle runs. Commit hydrated files separately.
+
 **Dispatch:** Launch a `general-purpose` agent (in background when possible) with the model from `config.md` (default: `haiku`) and this prompt:
 
 > Update the poor-man-memory files. This is a WRITE task — edit files only. Do NOT run any git commands.
