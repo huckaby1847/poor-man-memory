@@ -49,6 +49,22 @@ Output the agent's returned string verbatim — it contains the fully formatted 
 > 5. Sort by recency (most recent first)
 > 6. Render as aligned table with legend
 >
+> ### Token Burn Estimate (all levels)
+>
+> After the heatmap, show a token burn estimate:
+>
+> 1. Count total characters across all `.md` files in `memory/`: `cat memory/*.md | wc -c`
+> 2. Estimate read tokens: `total_chars / 4`
+> 3. Get last memory diff stats: `git diff HEAD~1 --stat -- memory/ | tail -1` (extract insertions + deletions)
+> 4. Estimate write tokens: `(insertions + deletions) * 20 / 4`
+> 5. Render:
+> ```
+> Token Burn (per save)
+>   Read:  ~12,400 tok    Write: ~850 tok    Total: ~13,250 tok
+> ```
+>
+> Use compact single-line format for dump. Round to nearest 50. Comma-separate thousands.
+>
 > ### Visualization 2: Clusters + Timeline (summary and detailed only)
 >
 > If level is `summary`:

@@ -63,7 +63,32 @@ Output the agent's returned string verbatim — it contains the fully formatted 
 >
 > Sort by last modified (most recent first).
 >
-> ### Step 6 — Generate warnings
+> ### Step 6 — Token burn estimate
+>
+> Estimate the token cost of PMM operations:
+>
+> **Read cost (per save cycle):** The maintain agent reads all active memory files.
+> - Count total characters across all `.md` files in `memory/`: `cat memory/*.md | wc -c`
+> - Estimate tokens: `total_chars / 4` (rough average for English markdown)
+> - This is the input token cost each time the maintain agent runs
+>
+> **Write cost (per save cycle):** The maintain agent edits files.
+> - Get the size of the last memory commit's diff: `git diff HEAD~1 --stat -- memory/ | tail -1` (extract insertions + deletions)
+> - If no prior commit, use 0
+> - Estimate tokens: `(insertions + deletions) * 20` chars average per line / 4 chars per token
+> - This is the approximate output token cost per save
+>
+> **Format as:**
+> ```
+> Token Burn (per save)
+>   Read:   ~12,400 tokens (memory files loaded by maintain agent)
+>   Write:  ~850 tokens (estimated from last diff: +34 -8 lines)
+>   Total:  ~13,250 tokens/save
+> ```
+>
+> Use comma-separated numbers for readability. Round to nearest 50.
+>
+> ### Step 7 — Generate warnings
 >
 > Check for:
 > - **Template-only active files:** Any active file (per config.md) that is still template-only
@@ -71,7 +96,7 @@ Output the agent's returned string verbatim — it contains the fully formatted 
 > - **Stale last.md:** `last.md` not updated in the current session (last modified >2 hours ago)
 > - **Large files:** Any file >200 lines (suggest trimming)
 >
-> ### Step 7 — Format output
+> ### Step 8 — Format output
 >
 > Return the fully formatted dashboard:
 >
@@ -96,6 +121,11 @@ Output the agent's returned string verbatim — it contains the fully formatted 
 >   ...
 >
 > Total: 847 lines across 17 files
+>
+> Token Burn (per save)
+>   Read:   ~12,400 tokens (memory files loaded by maintain agent)
+>   Write:  ~850 tokens (estimated from last diff: +34 -8 lines)
+>   Total:  ~13,250 tokens/save
 >
 > Warnings
 >   ⚠ taxonomies.md is still template-only
