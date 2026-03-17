@@ -71,6 +71,18 @@ Ratified by: user
 Context: graph.md captures explicit typed edges but can't represent implicit weighted relationships. vectors.md fills that gap — semantic similarities with scores, concept clusters, and embedding provenance tracking.
 Ratified by: user
 
+**2026-03-18 — Subagent dispatch for /pmm-status, /pmm-dump, /pmm-update (complete refactor)**
+Context: Refactored all three commands to follow the pattern /pmm-viz already uses. All heavy lifting (file reads, git commands, rendering) runs in a general-purpose subagent; main context outputs the result verbatim. Keeps main context clean.
+Ratified by: consensus
+
+**2026-03-18 — Token burn estimates in /pmm-status and /pmm-dump outputs**
+Context: Memory saves consume tokens. /pmm-status and /pmm-dump now estimate token cost per save cycle: read tokens = file size in chars / 4, write tokens = diff lines × 20 / 4. Helps users understand cost of their save cadence.
+Ratified by: consensus
+
+**2026-03-18 — secrets.md for gitignored API keys and credentials**
+Context: PMM needs a place to store sensitive data (API keys, tokens, auth credentials) that is never committed to git. Planned feature: memory/secrets.md is gitignored, local-only, not readable/writable by maintain agent. Pattern: .gitignore rules + git reset in commit step.
+Ratified by: consensus
+
 **2026-03-16 — Use agents (subprocesses) for all memory operations**
 Context: Main context window was getting polluted with file I/O and git ops during memory phases. Dispatching agents keeps the main window clean — agents do the heavy lifting and return concise results.
 Ratified by: user

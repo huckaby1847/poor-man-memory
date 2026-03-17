@@ -27,3 +27,11 @@ Reason: NominexHQ is the project owner. Co-Authored-By lines are acceptable in g
 **2026-03-17 — Memory updates do not require user acknowledgement**
 Scope: always
 Reason: Adding new facts, decisions, lessons, or any other entries to memory files should happen proactively based on the trigger table. Do not ask the user for permission before saving to memory — just do it. The user trusts the system to capture what matters.
+
+**2026-03-18 — Always use branch → PR → merge workflow, never push directly to main**
+Scope: always
+Reason: Three direct pushes to main violated the established PR workflow. All commits must go through: create feature branch → push to remote → open PR → review/approve → merge. Never push directly to main.
+
+**2026-03-18 — Proactively hydrate template-only files during Phase 5**
+Scope: always
+Reason: taxonomies.md remained empty despite 16 other files being populated, because hydration was only triggered by explicit request. During Phase 5, detect files with structure but no data entries and populate them proactively from existing memory before the maintain cycle runs.

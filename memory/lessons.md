@@ -34,3 +34,11 @@ What to do instead: Either merge directly with --admin flag, or have a second id
 **2026-03-17 — Graph and vectors have marginal value in small/early projects**
 What happened: graph.md and vectors.md were more future-proofing than present utility during initial development. The relationships were too obvious to need formal tracking.
 What to do instead: Accept this as intentional — they pay off across sessions and in complex projects. Don't skip them, but don't over-invest early either.
+
+**2026-03-18 — Never push directly to main — always use branch → PR → merge workflow**
+What happened: Three commits were pushed directly to main in the project history instead of using the established PR workflow (leith/branch → PR → merge). This bypassed code review and violated the established process.
+What to do instead: All commits must go through the PR workflow. Create a branch, push to remote, open PR, wait for review (or self-review if admin), then merge. Never push directly to main.
+
+**2026-03-18 — Auto-hydrate template-only files proactively during Phase 5**
+What happened: taxonomies.md remained template-only (empty table) for the entire project lifetime despite 16 other files being fully populated. It was only filled when explicitly requested, not proactively.
+What to do instead: During Phase 5 Hydrate, detect template-only files (those with structure but no data) and populate them proactively from existing memory before the maintain cycle runs. Don't wait for explicit requests to seed new files.

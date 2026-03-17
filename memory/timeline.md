@@ -39,3 +39,7 @@ Append-only — entries go in chronological order.
 **2026-03-17** — Added frontmatter `argument-hint` and `$ARGUMENTS` variable for skill argument passing
 **2026-03-17** — Implemented firstSeen/lastSeen timestamps per node/edge for D3.js time slider
 **2026-03-17** — PR #10 merged to main — all new viz and update commands shipped
+**2026-03-18** — Refactored /pmm-status, /pmm-dump, /pmm-update to dispatch subagents for clean main context
+**2026-03-18** — Added token burn estimates to /pmm-status and /pmm-dump (chars/4 read, diff lines × 20 / 4 write)
+**2026-03-18** — Fixed Phase 5 auto-hydrate to detect and populate template-only files proactively
+**2026-03-18** — Planned secrets.md feature: gitignored local-only storage for API keys, tokens, credentials

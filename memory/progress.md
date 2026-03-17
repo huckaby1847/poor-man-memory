@@ -48,9 +48,15 @@ v1.0.0 released on GitHub. Repository is live at https://github.com/NominexHQ/po
 
 <!-- Nothing currently blocked -->
 
+- Refactored /pmm-status, /pmm-dump, /pmm-update to subagent dispatch
+- Added token burn estimates to /pmm-status and /pmm-dump
+- Fixed Phase 5 auto-hydrate to detect and proactively populate template-only files
+- Planned secrets.md feature (gitignored credentials storage)
+- Feedback captured: enforce branch → PR → merge workflow, never push directly to main
+
 ## Next
 
+- Implement secrets.md feature with gitignore and maintain agent access control
 - Further dog-fooding across real projects
 - Community feedback on v1.0
-- Potential v1.1 features
-- Evaluate whether taxonomies.md needs initial population
+- Evaluate v1.1 feature set based on usage patterns
