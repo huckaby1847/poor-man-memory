@@ -3,9 +3,7 @@
 Current state, milestones, and what's next.
 Updated whenever state changes meaningfully.
 
-## Current State
-
-v1.0.0 released on GitHub. Repository is live at https://github.com/NominexHQ/poor-man-memory as a clone-and-go project. All 17 memory files implemented. 5 phases operational (Init, Session Start, Maintain, Recall, Hydrate). 3 skills built (poor-man-memory, pmm-settings, pmm-viz). System stable and undergoing dog-fooding.
+v1.0.0 released on GitHub. Repository is live at https://github.com/NominexHQ/poor-man-memory as a clone-and-go project. All 17 memory files implemented. 5 phases operational (Init, Session Start, Maintain, Recall, Hydrate). 5 skills built (poor-man-memory, pmm-settings, pmm-dump, pmm-viz, pmm-update). Interactive D3.js visualization with time slider. System stable and undergoing dog-fooding.
 
 ## Completed
 
@@ -34,6 +32,13 @@ v1.0.0 released on GitHub. Repository is live at https://github.com/NominexHQ/po
 - Git history rewritten to remove private emails
 - /pmm-viz added — ASCII visualization
 - Major memory reconstruction from recovered conversation history
+- Restructured /pmm-viz into three commands: /pmm-dump (ASCII), /pmm-viz (D3.js interactive), /pmm-status (dashboard)
+- Created `pmm/` directory with D3.js library, HTML template, version manifest
+- Implemented interactive D3.js force-directed graph with type-colored nodes, search, time slider, clusters
+- Created /pmm-update command for manifest-based upstream synchronization
+- Added argument-hint frontmatter and $ARGUMENTS variable for skill argument passing
+- Implemented firstSeen/lastSeen temporal tracking per node/edge for D3.js time slider
+- PR #10 merged to main
 
 ## In Progress
 

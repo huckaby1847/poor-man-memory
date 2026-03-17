@@ -13,52 +13,66 @@ Check the upstream Poor Man's Memory repository for updates and apply them safel
 
 ## Behaviour
 
-### Step 1 — Read local version
+### Phase 1 — Version check (subagent)
 
-Read `pmm/version.json` in the project root.
+Dispatch a `general-purpose` agent with this prompt. Replace `<project-root>` with the actual project root path.
 
-- If the file exists, extract the `version` string and the `files.system` array.
-- If the file does not exist, treat as version `0.0.0` (pre-versioning install). Use an empty `files.system` array.
+> Check for PMM updates. This is a READ-ONLY task with one exception: you may clone the upstream repo to /tmp.
+>
+> **Project root:** `<project-root>`
+>
+> ### Step 1 — Read local version
+>
+> Read `<project-root>/pmm/version.json`.
+> - If exists: extract `version` string and `files.system` array
+> - If missing: treat as version `0.0.0` with empty `files.system` array
+>
+> ### Step 2 — Clone upstream
+>
+> ```bash
+> git clone --depth 1 https://github.com/NominexHQ/poor-man-memory.git /tmp/pmm-upstream-$$
+> ```
+>
+> If this fails, return: `ERROR: Could not reach the upstream PMM repository. Check your network connection.`
+>
+> ### Step 3 — Compare versions
+>
+> Read `/tmp/pmm-upstream-$$/pmm/version.json`. Extract upstream `version` string.
+>
+> If versions match, clean up temp dir and return: `PMM is up to date (v{version})`
+>
+> ### Step 4 — Build change report
+>
+> For each file in upstream `files.system` array:
+> - Exists locally AND differs → **M** (modified)
+> - Does not exist locally → **A** (added)
+> - Exists locally AND identical → unchanged (skip)
+>
+> For each file in local `files.system` NOT in upstream list → **D** (deleted)
+>
+> For merge files (`.claude/settings.json`): read both, count new permission entries in upstream.
+>
+> Return a structured report in this exact format:
+> ```
+> UPDATE_AVAILABLE
+> LOCAL_VERSION: {version}
+> UPSTREAM_VERSION: {version}
+> TEMP_DIR: /tmp/pmm-upstream-{pid}
+> ---
+> M  .claude/skills/pmm-viz/SKILL.md
+> A  .claude/skills/pmm-update/SKILL.md
+> D  .claude/skills/old-skill/SKILL.md
+> ~  .claude/settings.json (+2 permissions)
+> =  8 unchanged
+> ```
+>
+> Do NOT clean up the temp directory — it will be needed if the user approves.
 
-### Step 2 — Clone upstream to temp
+### Phase 2 — Show report and confirm (main context)
 
-```bash
-git clone --depth 1 https://github.com/NominexHQ/poor-man-memory.git /tmp/pmm-upstream-$$
-```
+If the agent returns "up to date" or "ERROR", output that message and stop.
 
-If this fails (network error, auth issue), output: "Could not reach the upstream PMM repository. Check your network connection." Clean up and stop.
-
-### Step 3 — Compare versions
-
-Read `/tmp/pmm-upstream-$$/pmm/version.json`. Extract the upstream `version` string.
-
-If local version equals upstream version:
-- Output: `PMM is up to date (v{version})`
-- Clean up temp directory
-- Stop
-
-If local version is behind: proceed.
-
-### Step 4 — Build change report
-
-Compare each file listed in the **upstream** `files.system` array:
-
-1. **File exists locally AND differs from upstream** → mark as **M** (modified)
-2. **File does not exist locally** → mark as **A** (added)
-3. **File exists locally AND is identical** → mark as unchanged (skip)
-
-Compare the **local** `files.system` array against the upstream one:
-- Any file in the local list that is **NOT** in the upstream list → mark as **D** (deleted — upstream removed it)
-
-For **merge files** (`.claude/settings.json`):
-- Read both local and upstream versions
-- Parse the `permissions.allow` arrays
-- Identify entries in upstream that are missing locally
-- Count the additions
-
-### Step 5 — Show report and confirm
-
-Present the change report to the user:
+If the agent returns `UPDATE_AVAILABLE`, parse the report and present it to the user:
 
 ```
 PMM Update Available: v{local} → v{upstream}
@@ -67,37 +81,27 @@ PMM Update Available: v{local} → v{upstream}
 Changed files:
   M  .claude/skills/pmm-viz/SKILL.md
   A  .claude/skills/pmm-update/SKILL.md
-  A  pmm/version.json
-  D  .claude/skills/old-removed-skill/SKILL.md
+  D  .claude/skills/old-skill/SKILL.md
 
 Merge (additive only):
-  ~  .claude/settings.json  (+2 new permission entries)
+  ~  .claude/settings.json  (+2 permissions)
 
-Unchanged: 8 files (skipped)
-
+Unchanged: 8 files
 Memory files: untouched (as always)
 ```
 
-Then ask the user using `AskUserQuestion`:
+Ask the user using `AskUserQuestion`:
+- **yes** — apply all changes
+- **no** — cancel (clean up temp dir)
+- **show diffs** — display diffs, then ask again
 
-> **Apply this update?**
-> - **yes** — apply all changes
-> - **no** — cancel, keep current version
-> - **show diffs** — display file diffs before deciding
+### Phase 3 — Apply updates (subagent)
 
-If "show diffs": display `diff -u` output for each M file and the full content of each A file, then ask again.
-
-If "no": clean up temp directory, stop.
-
-If "yes": proceed to Step 6.
-
-### Step 6 — Apply updates via agent
-
-Dispatch a `general-purpose` agent with this prompt:
+If user approves, dispatch a `general-purpose` agent:
 
 > Apply PMM upstream updates. This is a WRITE task. Do NOT run any git commands.
 >
-> **Upstream source:** `/tmp/pmm-upstream-$$`
+> **Upstream source:** `{temp_dir from phase 1 report}`
 > **Project root:** `<project-root>`
 >
 > **System files to OVERWRITE** (copy from upstream, replacing local):
@@ -107,75 +111,42 @@ Dispatch a `general-purpose` agent with this prompt:
 > [list each D file path]
 >
 > **Merge files** (additive only):
-> - `.claude/settings.json`: Read both local and upstream. Parse the JSON `permissions.allow` arrays. Add any entries from upstream that are missing in local. Do NOT remove any existing entries. Preserve the user's custom permissions. Write back.
+> - `.claude/settings.json`: Add missing permission entries from upstream. Do NOT remove existing entries.
 >
-> **NEVER touch these files:**
+> **NEVER touch:**
 > - Any file in `memory/`
 > - `pmm/viz-cache.html`
 > - `.claude/settings.local.json`
-> - Any file not listed above
 >
 > **Instructions:**
-> 1. For each OVERWRITE file: read the upstream version from `/tmp/pmm-upstream-$$/`, write it to the project path. Create parent directories if needed.
-> 2. For each DELETE file: delete it. If the parent directory is now empty, remove it too.
-> 3. For the merge file: read both, merge permissions additively, write back.
-> 4. Return a summary: how many files overwritten, deleted, merged.
+> 1. For each OVERWRITE file: read upstream version, write to project path. Create parent dirs if needed.
+> 2. For each DELETE file: delete it. Remove empty parent directories.
+> 3. For merge file: read both, merge permissions additively, write back.
+> 4. Return a summary of actions taken.
 
-### Step 7 — Check for new memory file types
+### Phase 4 — Post-update (main context)
 
-Read the upstream `references/templates.md` and the local one. If the upstream version has templates for memory files that don't exist in the local version:
+1. **Check for new memory file types**: Compare upstream `references/templates.md` to local. If new templates exist and user has `memory/` directory, create new files and trigger Phase 5 (Hydrate) per main skill.
 
-1. Check if the user has an existing `memory/` directory (they've initialised PMM)
-2. For each new memory file type:
-   - Create the file from its template in `memory/`
-   - Trigger Phase 5 (Hydrate) per the main skill — dispatch a `general-purpose` agent to populate the new file from existing memory context
-   - Add the file to the active list in `memory/config.md`
-3. If no `memory/` directory exists, skip this step (the files will be created at init time)
+2. **Commit**:
+   ```bash
+   git add .claude/skills/ pmm/ CLAUDE.md README.md .gitignore .claude/settings.json
+   git commit -m "pmm: update to v{new_version}"
+   ```
 
-### Step 8 — Commit
+3. **Clean up**:
+   ```bash
+   rm -rf {temp_dir}
+   rm -f pmm/viz-cache.html
+   ```
 
-```bash
-git add .claude/skills/ pmm/ CLAUDE.md README.md .gitignore .claude/settings.json
-git commit -m "pmm: update to v{new_version}"
-```
-
-Only add files that were actually changed. If new memory files were created and hydrated in Step 7:
-
-```bash
-git add memory/
-git commit -m "memory: hydrate new files from PMM v{new_version} update"
-```
-
-### Step 9 — Clean up
-
-```bash
-rm -rf /tmp/pmm-upstream-$$
-```
-
-Delete the viz cache so it regenerates with the latest template:
-
-```bash
-rm -f pmm/viz-cache.html
-```
-
-### Step 10 — Report
-
-Output a summary:
-
-```
-PMM updated to v{new_version}
-  Updated: 3 system files
-  Added: 2 new files
-  Removed: 1 deprecated file
-  Merged: settings.json (+2 permissions)
-  New memory files: voices.md (hydrated from existing context)
-```
+4. **Report** summary of what changed.
 
 ## Notes
 
-- **Never touch `memory/`** — except to add new file types introduced by the update (Step 7)
+- **Never touch `memory/`** — except to add new file types introduced by the update
 - **Merge, don't replace** `settings.json` — the user may have custom permissions
-- **File moves/renames** manifest as DELETE of the old path + ADD of the new path. The `files.system` array in `version.json` makes this explicit.
-- **Self-update**: This skill's own SKILL.md is in the system files list. It gets overwritten like any other. Takes effect on the next invocation.
-- **Pre-versioning installs**: Users without `pmm/version.json` get treated as v0.0.0. Every system file is offered for update. After the update, they'll have `version.json` and future updates work normally.
-- **Viz cache**: Always deleted after update so `/pmm-viz` regenerates with the latest template.
+- **File moves/renames** manifest as DELETE + ADD via the `files.system` array in `version.json`
+- **Self-update**: This skill's SKILL.md gets overwritten. Takes effect next invocation.
+- **Pre-versioning installs**: No `pmm/version.json` → treated as v0.0.0, full sync offered.
+- **Viz cache**: Always deleted after update so `/pmm-viz` regenerates with latest template.

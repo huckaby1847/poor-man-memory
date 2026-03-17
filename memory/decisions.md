@@ -11,6 +11,26 @@ Ratified by: [user / consensus / default]
 
 ---
 
+**2026-03-17 — Interactive D3.js viz as primary memory visualization tool**
+Context: ASCII /pmm-viz was useful but limited. Restructured into three commands with D3.js force-directed graph as the main viz (runs as subagent, opens in browser), /pmm-dump for terminal ASCII, /pmm-status for health checks. Type-colored nodes, search, filters, time slider.
+Ratified by: user
+
+**2026-03-17 — Artifacts in visible `pmm/` directory, not hidden `.claude/`**
+Context: D3.js library, HTML template, version manifest should be inspectable by users. Placed at project root `pmm/` rather than hidden `.claude/skills/poor-man-memory/` for transparency and ease of audit.
+Ratified by: user
+
+**2026-03-17 — Manifest-based update system (/pmm-update) for upstream sync**
+Context: Decided against git merge for system file updates — too risky. Instead: clone-to-temp, manifest diff, file-by-file apply with user confirmation. Handles renames as delete+add.
+Ratified by: user
+
+**2026-03-17 — Frontmatter `argument-hint` and `$ARGUMENTS` for skill argument passing**
+Context: Skills needed a standard way to declare and receive command-line arguments. Added `argument-hint` in YAML frontmatter and `$ARGUMENTS` variable available at runtime.
+Ratified by: user
+
+**2026-03-17 — firstSeen/lastSeen per node/edge, not full snapshots, for time slider**
+Context: D3.js time slider tracks temporal evolution of graph. Each node/edge records firstSeen and lastSeen timestamps instead of per-commit snapshots. More efficient, sufficient granularity.
+Ratified by: user
+
 **2026-03-17 — Phase 5 "Hydrate" for non-greenfield installs**
 Context: When PMM is installed in an existing project (not a fresh clone), memory files need to be seeded from existing context. Phase 5 handles this — new files are populated from whatever memory already exists.
 Ratified by: user

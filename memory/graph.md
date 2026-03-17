@@ -77,10 +77,32 @@ Use typed relationships from references/graph-syntax.md.
 
 ## Skills
 [[/pmm-settings]] → writes-to → [[config.md]]
+[[/pmm-dump]] → reads-from → [[graph.md]]
+[[/pmm-dump]] → reads-from → [[vectors.md]]
+[[/pmm-dump]] → reads-from → [[timeline.md]]
 [[/pmm-viz]] → reads-from → [[graph.md]]
 [[/pmm-viz]] → reads-from → [[vectors.md]]
 [[/pmm-viz]] → reads-from → [[timeline.md]]
+[[/pmm-viz]] → uses → [[D3.js v7.9.0]]
+[[/pmm-viz]] → uses → [[pmm-viz-template.html]]
+[[/pmm-status]] → reads-from → [[config.md]]
+[[/pmm-status]] → reads-from → [[Memory Files]]
+[[/pmm-update]] → reads-from → [[GitHub Repo]]
+[[/pmm-update]] → writes-to → [[System Files]]
+[[pmm-viz-template.html]] → part-of → [[pmm/ Directory]]
+[[D3.js v7.9.0]] → part-of → [[pmm/ Directory]]
+[[version.json]] → part-of → [[pmm/ Directory]]
+
+## Visualization Architecture
+[[D3.js force-directed graph]] → enables → [[Interactive memory visualization]]
+[[Type-colored nodes]] → part-of → [[D3.js force-directed graph]]
+[[Search filters]] → part-of → [[D3.js force-directed graph]]
+[[Time slider]] → part-of → [[D3.js force-directed graph]]
+[[Cluster convex hulls]] → part-of → [[D3.js force-directed graph]]
+[[Time slider]] → depends-on → [[firstSeen/lastSeen timestamps]]
+[[firstSeen/lastSeen timestamps]] → tracks → [[Node/Edge temporal evolution]]
 
 ## Dispatch
 [[Agents]] → writes-to → [[Memory Files]]
 [[Main Context]] → uses → [[git]]
+[[/pmm-viz]] → triggers → [[Subagent for D3.js rendering]]

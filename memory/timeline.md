@@ -32,6 +32,10 @@ Append-only — entries go in chronological order.
 **2026-03-17** — User voice captured in preferences.md
 **2026-03-17** — Git history rewritten to remove private emails
 **2026-03-17** — /pmm-viz added — ASCII visualization for memory state
-**2026-03-17** — Old "Poor Man's Memory" directory deleted (remnant from rename)
-**2026-03-17** — Recovered full development history from old conversation transcripts
-**2026-03-17** — Major memory reconstruction — populated all files with recovered context
+**2026-03-17** — Restructured /pmm-viz: /pmm-dump (ASCII, 3 levels), /pmm-viz (D3.js graph), /pmm-status (dashboard)
+**2026-03-17** — Implemented interactive D3.js force-directed graph with type colors, search, filters, time slider, convex hulls
+**2026-03-17** — Created `pmm/` directory with D3.js v7.9.0, HTML template, version.json manifest
+**2026-03-17** — Created /pmm-update command for manifest-based upstream sync
+**2026-03-17** — Added frontmatter `argument-hint` and `$ARGUMENTS` variable for skill argument passing
+**2026-03-17** — Implemented firstSeen/lastSeen timestamps per node/edge for D3.js time slider
+**2026-03-17** — PR #10 merged to main — all new viz and update commands shipped

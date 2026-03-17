@@ -382,6 +382,20 @@ const PMM_DATA = /*PMM_DATA_PLACEHOLDER*/{"nodes":[],"edges":[],"clusters":[],"t
   const nodeData = PMM_DATA.nodes;
   const nodeMap = new Map(nodeData.map(n => [n.id, n]));
 
+  // Auto-create missing nodes referenced by edges (resilience against incomplete parsing)
+  PMM_DATA.edges.forEach(e => {
+    const src = typeof e.source === 'string' ? e.source : e.source.id;
+    const tgt = typeof e.target === 'string' ? e.target : e.target.id;
+    [src, tgt].forEach(id => {
+      if (!nodeMap.has(id)) {
+        const inferType = id.endsWith('.md') ? 'file' : 'concept';
+        const node = { id, type: inferType, label: id, metadata: {}, clusters: [], firstSeen: e.firstSeen, lastSeen: e.lastSeen };
+        nodeData.push(node);
+        nodeMap.set(id, node);
+      }
+    });
+  });
+
   // Resolve edge source/target to objects for D3
   const edgeData = PMM_DATA.edges.map(e => ({
     ...e,
