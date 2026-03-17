@@ -362,16 +362,34 @@ When invoked:
 
 This command is implemented as a separate skill at `.claude/skills/pmm-settings/SKILL.md`.
 
+### /pmm-dump
+
+Renders PMM memory state as inline ASCII visualizations. Three depth levels:
+
+- `/pmm-dump` — heatmap only (quick status check)
+- `/pmm-dump summary` — heatmap + cluster list + last 5 timeline entries
+- `/pmm-dump detailed` — full ASCII: graph map + heatmap + similarity matrix + clusters
+
+This command is implemented as a separate skill at `.claude/skills/pmm-dump/SKILL.md`.
+
 ### /pmm-viz
 
-Renders PMM memory state as inline ASCII visualizations. Three views available:
+Interactive D3.js force-directed graph visualization. Parses all memory files, generates an HTML file with embedded D3.js, and opens it in the browser. Runs as a subagent.
 
-- `/pmm-viz` — all three visualizations
-- `/pmm-viz graph` — relationship map from graph.md
-- `/pmm-viz heatmap` — file activity heatmap from git log
-- `/pmm-viz vectors` — similarity matrix and clusters from vectors.md
+- `/pmm-viz` — full graph (all memory files)
+- `/pmm-viz graph` — relationships from graph.md only
+- `/pmm-viz clusters` — cluster members + similarity edges only
+- `/pmm-viz timeline` — event nodes + decision nodes + temporal edges
 
-This command is implemented as a separate skill at `.claude/skills/pmm-viz/SKILL.md`.
+Artifacts live in `pmm/` at the project root (D3.js, HTML template, cached output). This command is implemented as a separate skill at `.claude/skills/pmm-viz/SKILL.md`.
+
+### /pmm-status
+
+Quick health dashboard. Shows initialization state, last save time, recent commits, file health, and warnings.
+
+- `/pmm-status` — show full status dashboard
+
+This command is implemented as a separate skill at `.claude/skills/pmm-status/SKILL.md`.
 
 ### /pmm-save
 
@@ -388,3 +406,11 @@ This command is implemented as a separate skill at `.claude/skills/pmm-save/SKIL
 - `references/graph-syntax.md` — edge types, relationship vocabulary, and graph.md examples
 - `references/vector-syntax.md` — similarity format, cluster format, embedding registry, and vectors.md examples
 - `references/voice-syntax.md` — tone profile format, internal dialogue format, and voices.md examples
+
+## Artifact Files
+
+The `pmm/` directory at the project root contains user-inspectable artifacts for the interactive visualization:
+
+- `pmm/d3.v7.min.js` — D3.js v7 minified (dependency for interactive graph)
+- `pmm/pmm-viz-template.html` — HTML template with data/D3 placeholders
+- `pmm/viz-cache.html` — Generated visualization output (gitignored, regenerated on demand)

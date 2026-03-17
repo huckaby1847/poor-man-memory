@@ -47,7 +47,10 @@ If you already have a project and just want to drop in the memory system:
    .claude/skills/poor-man-memory/    # Main skill + reference docs
    .claude/skills/pmm-save/           # Explicit save command
    .claude/skills/pmm-settings/       # Settings command
-   .claude/skills/pmm-viz/            # ASCII visualization command
+   .claude/skills/pmm-dump/           # ASCII memory dump (text visualization)
+   .claude/skills/pmm-viz/            # Interactive D3.js graph (browser)
+   .claude/skills/pmm-status/         # Health dashboard
+   pmm/                               # D3.js artifact + HTML template (for /pmm-viz)
    CLAUDE.md                          # Bootstrap instructions for Claude
    ```
 
@@ -103,7 +106,9 @@ The `memory/` directory will be created inside your project. Add it to version c
 |---|---|
 | `/pmm-save` | Explicitly trigger a memory save |
 | `/pmm-settings` | Change memory system configuration |
-| `/pmm-viz` | Visualize memory state as ASCII art (graph, heatmap, vectors) |
+| `/pmm-dump` | ASCII memory dump — three levels: status, summary, detailed |
+| `/pmm-viz` | Interactive D3.js memory graph — opens in browser |
+| `/pmm-status` | Quick health dashboard — initialization, saves, file health |
 | `/loop 5m /pmm-save` | Auto-save memory every 5 minutes |
 
 ## Recurring Saves
