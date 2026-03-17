@@ -3,7 +3,12 @@
     "allow": [
       "Bash(git add memory/*)",
       "Bash(git commit -m 'memory:*')",
-      "Bash(git push origin main*)"
+      "Bash(git push origin main*)",
+      "Bash(git rev-parse *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git clone --depth 1 *)",
+      "Bash(rm -rf /tmp/pmm-upstream*)"
     ]
   }
 }

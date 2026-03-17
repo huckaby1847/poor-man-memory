@@ -16,7 +16,10 @@ This will prompt you for preferences (save cadence, verbosity, active files, etc
 
 - `/pmm-save` — Explicitly trigger a memory save
 - `/pmm-settings` — Change memory system configuration at any time
-- `/pmm-viz` — Visualize memory state as ASCII art (graph, heatmap, vectors)
+- `/pmm-dump` — ASCII memory dump (three levels: status, summary, detailed)
+- `/pmm-viz` — Interactive D3.js memory graph (opens in browser)
+- `/pmm-status` — Quick health dashboard (initialization, saves, file health)
+- `/pmm-update` — Check for and apply PMM system updates from upstream
 - `update memory` — Trigger a manual memory update
 - `summarise memory` — Get a summary of what's in memory
 

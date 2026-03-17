@@ -1,0 +1,34 @@
+{
+  "version": "1.0.0",
+  "released": "2026-03-17",
+  "upstream": "https://github.com/NominexHQ/poor-man-memory.git",
+  "files": {
+    "system": [
+      ".claude/skills/poor-man-memory/SKILL.md",
+      ".claude/skills/poor-man-memory/references/graph-syntax.md",
+      ".claude/skills/poor-man-memory/references/templates.md",
+      ".claude/skills/poor-man-memory/references/vector-syntax.md",
+      ".claude/skills/poor-man-memory/references/voice-syntax.md",
+      ".claude/skills/pmm-save/SKILL.md",
+      ".claude/skills/pmm-settings/SKILL.md",
+      ".claude/skills/pmm-dump/SKILL.md",
+      ".claude/skills/pmm-viz/SKILL.md",
+      ".claude/skills/pmm-status/SKILL.md",
+      ".claude/skills/pmm-update/SKILL.md",
+      "pmm/d3.v7.min.js",
+      "pmm/pmm-viz-template.html",
+      "pmm/version.json",
+      "CLAUDE.md",
+      "README.md",
+      ".gitignore"
+    ],
+    "merge": [
+      ".claude/settings.json"
+    ],
+    "never_touch": [
+      "memory/*",
+      "pmm/viz-cache.html",
+      ".claude/settings.local.json"
+    ]
+  }
+}
