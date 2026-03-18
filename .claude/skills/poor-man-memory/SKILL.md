@@ -67,7 +67,8 @@ memory/
 Claude dispatches a maintain agent:
 - At the end of every major milestone or decision
 - When explicitly asked by the user
-- Before a `/compact` operation — enforced by the PreCompact hook (`pmm/hooks/pre-compact.sh` blocks compact until /pmm-save runs)
+- Before a `/compact` operation (soft instruction — PreCompact hook fires but cannot block; save is Claude's responsibility)
+- Before session exit (when the user signals they are done or says goodbye)
 - When a new entity, process, or preference is established
 - At natural session breaks
 
@@ -300,8 +301,6 @@ git add memory/ && git reset HEAD memory/secrets.md 2>/dev/null; git commit -m "
 # Only if Auto-push is "on" in config.md:
 git push origin main || echo "⚠️  Push failed — changes committed locally but not pushed"
 
-# Set compact-ready marker (allows subsequent /compact to pass PreCompact hook)
-touch "/tmp/pmm-compact-ready-$(pwd | shasum -a 256 | cut -c1-12)"
 ```
 
 Note: memory commits go directly to main (not via PR) — this is an intentional exception to the project's PR workflow, as automated memory saves cannot wait for review.

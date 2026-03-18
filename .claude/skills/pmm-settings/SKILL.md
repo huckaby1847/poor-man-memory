@@ -109,9 +109,9 @@ Use `AskUserQuestion` to present the same questions from Phase 1 of the main ski
 
 *In lazy mode, all 16 memory files are already in context — git history is only needed for entries that have been trimmed from sliding-window files (timeline.md, summaries.md). Most queries will be answered from context without any agent dispatch.*
 
-**Q14: Pre-compact hook** — Should PMM block `/compact` until memory has been saved?
-- On (default) — PreCompact hook blocks compact, Claude runs /pmm-save first, then compact proceeds
-- Off — compact proceeds without enforced save (relies on soft instruction in BOOTSTRAP.md)
+**Q14: Pre-compact hook** — Should PMM remind Claude to save before `/compact`?
+- On (default) — PreCompact hook fires before compact (non-blocking; Claude Code does not support blocking PreCompact). Claude is responsible for saving per BOOTSTRAP.md instruction.
+- Off — suppress the pre-compact hook entirely (save still instructed via BOOTSTRAP.md soft rule)
 
 ### Step 3 — Write updated config
 

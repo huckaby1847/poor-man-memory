@@ -109,8 +109,8 @@ Run `/pmm-settings` at any time to change these.
 <!-- Should PMM block /compact until memory is saved? -->
 - pre_compact: on
 <!-- Options: on (default) | off -->
-<!-- on: PreCompact hook blocks compact, signals Claude to run /pmm-save first -->
-<!-- off: compact proceeds without enforced save (soft instruction only) -->
+<!-- on: PreCompact hook fires before compact (non-blocking — Claude Code does not support blocking PreCompact); save is Claude's responsibility per BOOTSTRAP.md instruction -->
+<!-- off: suppress the pre-compact save instruction entirely -->
 
 ## Protected Files
 

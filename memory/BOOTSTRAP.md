@@ -34,6 +34,7 @@ Dispatch a maintain agent when:
 - A milestone is reached or a blocker is hit
 - A mistake is made or a lesson is learned
 - Before any /compact operation
+- Before ending the session (user says goodbye, closes conversation, or signals they are done)
 - At the end of every major piece of work
 
 Agents edit files only. Main context handles git:

@@ -21,10 +21,6 @@ Lightweight trigger for Phase 3 (Maintain) of Poor Man's Memory. Captures curren
    # Only if Auto-push is "on" in config.md:
    git push origin main || echo "⚠️  Push failed — changes committed locally but not pushed"
    ```
-5b. **Set compact-ready marker:** After a successful commit, create the marker file so a subsequent `/compact` will pass the PreCompact hook:
-   ```bash
-   touch "/tmp/pmm-compact-ready-$(pwd | shasum -a 256 | cut -c1-12)"
-   ```
 6. **Run the Bootstrap Check** from `.claude/skills/poor-man-memory/SKILL.md` (`## Bootstrap Check` section).
 7. Respect the verbosity setting from `config.md`:
    - `silent` — no output, just the agent status indicator

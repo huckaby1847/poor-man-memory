@@ -118,8 +118,8 @@ Run `/pmm-settings` at any time to change these.
 <!-- Should PMM block /compact until memory is saved? -->
 - pre_compact: on
 <!-- Options: on (default) | off -->
-<!-- on: PreCompact hook blocks compact, signals Claude to run /pmm-save first -->
-<!-- off: compact proceeds without enforced save (soft instruction only) -->
+<!-- on: PreCompact hook fires before compact (non-blocking — Claude Code does not support blocking PreCompact); save is Claude's responsibility per BOOTSTRAP.md instruction -->
+<!-- off: suppress the pre-compact save instruction entirely -->
 
 ## Protected Files
 
@@ -199,6 +199,7 @@ Dispatch a maintain agent when:
 - A milestone is reached or a blocker is hit
 - A mistake is made or a lesson is learned
 - Before any /compact operation
+- Before ending the session (user says goodbye, closes conversation, or signals they are done)
 - At the end of every major piece of work
 
 Memory updates are proactive — do not ask the user for permission before saving. The system captures what matters based on the triggers above.
