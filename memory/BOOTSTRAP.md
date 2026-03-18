@@ -8,7 +8,6 @@ All memory operations run via agents (subprocesses) — never in the main contex
 At session start, dispatch an agent to read all files and return a structured summary:
 
 @memory/config.md
-@memory/BOOTSTRAP.md
 @memory/standinginstructions.md
 @memory/progress.md
 @memory/last.md

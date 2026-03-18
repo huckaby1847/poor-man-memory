@@ -151,6 +151,7 @@ Replace `<skill-base>` with the actual skill base directory path.
 4. Tell the user the memory system is initialised
 5. Inform them about pre-approving git commands (see "Reducing Permission Friction" above)
 6. Mention: *"Run `/pmm-settings` at any time to change how your memory system behaves."*
+7. **Run the Bootstrap Check** (see `## Bootstrap Check` below)
 
 ### Phase 2 — Session Start
 
@@ -283,6 +284,8 @@ git push origin main || echo "⚠️  Push failed — changes committed locally 
 ```
 
 Note: memory commits go directly to main (not via PR) — this is an intentional exception to the project's PR workflow, as automated memory saves cannot wait for review.
+
+After commit, **run the Bootstrap Check** (see `## Bootstrap Check` below).
 
 ### Phase 4 — Recall
 
@@ -470,6 +473,47 @@ Checks the upstream PMM repository for updates and applies them safely. System f
 - `/pmm-update` — check for updates and apply if available
 
 This command is implemented as a separate skill at `.claude/skills/pmm-update/SKILL.md`.
+
+## Bootstrap Check
+
+A reusable check run after `init memory`, `/pmm-save`, `/pmm-hydrate`, and `/pmm-update`. Surfaces the missing `@memory/BOOTSTRAP.md` wiring in `CLAUDE.md` before the user hits a session with no memory context.
+
+**Run this check whenever instructed by a phase or skill:**
+
+1. Read `memory/config.md`. If `bootstrap_reminder: off` appears in the file → **skip entirely**.
+2. Read `CLAUDE.md`. If `@memory/BOOTSTRAP.md` appears anywhere in it → **skip entirely** (already wired).
+3. Otherwise, present this prompt using `AskUserQuestion`:
+
+   > **PMM memory is not wired for auto-load.**
+   > `CLAUDE.md` does not import `memory/BOOTSTRAP.md`, so memory files are not loaded into Claude's context at the start of each session.
+   >
+   > Without this, memory recall will return empty results each session until you explicitly trigger a skill.
+   >
+   > Options:
+
+   - **Fix it now** — add `@memory/BOOTSTRAP.md` to `CLAUDE.md` and commit (recommended)
+   - **Remind me next time** — skip now, prompt will appear again after the next save or status check
+   - **Never remind me** — suppress this prompt permanently
+
+4. If user selects **Fix it now**:
+   - Read `CLAUDE.md`
+   - Insert a `## Memory` section with `@memory/BOOTSTRAP.md` after the `## First Run` section:
+     ```markdown
+     ## Memory
+
+     @memory/BOOTSTRAP.md
+     ```
+   - `git add CLAUDE.md && git commit -m "pmm: wire @memory/BOOTSTRAP.md into CLAUDE.md for auto-load"`
+   - Confirm: "Done — memory files will load automatically at the start of every session."
+
+5. If user selects **Never remind me**:
+   - Append to the `## Protected Files` section in `memory/config.md`:
+     ```
+     - bootstrap_reminder: off
+     ```
+   - `git add memory/config.md && git commit -m "memory: suppress bootstrap wiring reminder"`
+
+6. If user selects **Remind me next time** → no action taken.
 
 ## Reference Files
 

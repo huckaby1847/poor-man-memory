@@ -82,3 +82,7 @@ Run `/pmm-settings` at any time to change these.
 <!-- secrets_git options: never (default) | allow-with-warning -->
 <!-- never: pre-commit hook blocks any commit containing memory/secrets.md -->
 <!-- allow-with-warning: hook warns but does not block (irreversible if pushed to public repo) -->
+- bootstrap_reminder: on
+<!-- bootstrap_reminder options: on (default) | off -->
+<!-- on: PMM will prompt to wire @memory/BOOTSTRAP.md into CLAUDE.md if not already done -->
+<!-- off: suppress the reminder permanently (memory auto-load relies on manual skill triggers) -->

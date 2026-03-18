@@ -24,7 +24,8 @@ Explicitly query PMM memory files with optional filtering. Runs as a subagent to
 ## Behaviour
 
 1. If `$ARGUMENTS` is empty, ask the user what to search for before proceeding.
-2. Dispatch a `general-purpose` agent with the prompt below. Replace `<project-root>` with the actual project root path and `<user-query>` with `$ARGUMENTS`.
+2. **Bootstrap Check** — before dispatching the query agent, run the Bootstrap Check from `.claude/skills/poor-man-memory/SKILL.md` (`## Bootstrap Check` section). If the check fires (CLAUDE.md is not wired), note inline: *"Note: memory files are not auto-loaded at session start — query results reflect files on disk but Claude may not have this context in future sessions until the bootstrap wiring is set up."* Then proceed with the query regardless of what the user chooses.
+3. Dispatch a `general-purpose` agent with the prompt below. Replace `<project-root>` with the actual project root path and `<user-query>` with `$ARGUMENTS`.
 3. Output the agent's returned string verbatim.
 
 ### Agent Prompt
