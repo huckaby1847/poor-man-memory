@@ -55,3 +55,23 @@ Explicit recall command separate from Phase 4 Recall. Supports modular filtering
 - `deep` — expand via vector clusters (≥0.6 similarity), graph edge traversal, taxonomy sibling broadening
 - `dump` — switch to verbatim entries grouped by file (instead of prose)
 - Modifiers stack: e.g., `deep what was...` or `dump by user:raffi in decisions.md since 2026-03-17`
+- Dispatched using `readonly_model` (haiku default, configurable) — read-only work, no reasoning required
+
+## Phase 2 Session Start Dispatch
+*Established: 2026-03-16*
+*Updated: 2026-03-19 with lazy mode*
+
+Configurable phase behaviour via `session_start` config setting:
+- **Lazy** (default): Skip Phase 2 agent entirely when `bootstrap_wired: true`. Memory files auto-load from @memory/BOOTSTRAP.md direct @-imports in CLAUDE.md (no agent dispatch needed). Saves ~33k tokens (~$0.5-1.5) per session. Falls back to eager if wiring not detected or `bootstrap_wired: false`.
+- **Eager**: Always dispatch Phase 2 agent to read and synthesize memory files (pre-v1.5.0 behaviour). Full read token cost (~10-18k tokens).
+- Dispatched using `readonly_model` (haiku default, configurable) — read-only summarization work.
+
+## Read-Only Agent Model Selection
+*Established: 2026-03-19*
+
+Configurable model for all read-only agent dispatches (Phase 2, Phase 4, pmm-query, pmm-dump, pmm-status, pmm-viz) via `readonly_model` config:
+- **Haiku** (default): Cheapest option for read-only work. ~95% cost reduction vs Opus, ~73% vs Sonnet. Sufficient for file reads and summarization without reasoning.
+- **Sonnet**: Middle-ground model, better quality summaries. ~5x cost of haiku, ~20% cost of Opus.
+- **Opus**: Most capable, original pre-v1.5.0 behaviour (high cost for read-only work).
+- **Inherit**: Use parent context model (pre-v1.5.0 behaviour). Falls back when config not set.
+- Set via /pmm-settings Q11 (readonly_model) at any time.

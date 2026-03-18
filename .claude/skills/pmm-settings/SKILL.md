@@ -1,6 +1,6 @@
 ---
 name: pmm-settings
-description: "Change Poor Man's Memory configuration. Re-presents preference prompts for save cadence, commit behaviour, push behaviour, sliding window size, verbosity, repository visibility, maintain agent model, maintain strategy, readonly agent model, session start mode, secrets_git, and active files. Use when the user runs /pmm-settings or asks to change memory system settings."
+description: "Change Poor Man's Memory configuration. Re-presents preference prompts for save cadence, commit behaviour, push behaviour, sliding window size, verbosity, repository visibility, maintain agent model, maintain strategy, readonly agent model, session start mode, recall beyond window, secrets_git, and active files. Use when the user runs /pmm-settings or asks to change memory system settings."
 ---
 
 # PMM Settings
@@ -28,6 +28,7 @@ Read `memory/config.md` and display the current settings to the user as a summar
 > - Maintain strategy: [current]
 > - Readonly agent model: [current]
 > - Session start: [current]
+> - Recall beyond window: [current]
 > - Secrets in git: [current]
 > - Active files: [count] of 15 active
 > - Deactivated: [list, or "none"]
@@ -100,6 +101,12 @@ Use `AskUserQuestion` to present the same questions from Phase 1 of the main ski
 - Eager — always dispatch a Phase 2 agent to read and synthesise all memory files (pre-v1.5.0 behaviour)
 
 *Lazy mode only works when `@memory/BOOTSTRAP.md` is imported in `CLAUDE.md`. Falls back to eager if `bootstrap_wired: false`.*
+
+**Q13: Recall beyond window** — When a recall query isn't found in the current memory window, should PMM ask before searching git history?
+- Prompt (default) — ask permission before dispatching an agent to search git history (one agent dispatch per beyond-window query)
+- Auto — silently search git history when needed, without prompting (costs 1 agent dispatch per miss)
+
+*In lazy mode, all 16 memory files are already in context — git history is only needed for entries that have been trimmed from sliding-window files (timeline.md, summaries.md). Most queries will be answered from context without any agent dispatch.*
 
 ### Step 3 — Write updated config
 

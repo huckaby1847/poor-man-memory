@@ -136,6 +136,18 @@ Ratified by: consensus
 Context: Bootstrap Check was re-reading CLAUDE.md on every invocation across all 6 PMM skills to detect if @memory/BOOTSTRAP.md was wired. Once wired is confirmed (during step 2 wiring or after "Fix it now"), set `bootstrap_wired: true` in config.md. Bootstrap Check then skips file reads entirely. New installs default `bootstrap_wired: false` in templates. Eliminates repeated CLAUDE.md read once wired.
 Ratified by: consensus
 
+**2026-03-19 — Lazy session start (Phase 2) when bootstrap_wired: true** [user:raffi]
+Context: Phase 2 agent (session-start recall) is expensive (~10-18k tokens, reads all 15 files). When @memory/BOOTSTRAP.md is wired into CLAUDE.md, memory files auto-load via direct @-imports in CLAUDE.md without needing an explicit recall agent. New config setting `session_start: lazy` (default) skips Phase 2 entirely in this case, saving ~33k tokens per session. Option `eager` preserves pre-v1.5.0 behaviour (always dispatch Phase 2 agent). Falls back to eager if `bootstrap_wired: false`.
+Ratified by: user
+
+**2026-03-19 — Readonly model (haiku default) for all read-only agent dispatches** [user:raffi]
+Context: Session-start Phase 2, recall Phase 4, and all read-only skills (pmm-query, pmm-dump, pmm-status, pmm-viz) do not need full reasoning — they read files and synthesize summaries. Configurable `readonly_model` (default: haiku) forces haiku for these agents instead of inheriting the parent model. ~95% cheaper than Opus, ~73% cheaper than Sonnet for the same tasks. Options: haiku (default) | sonnet | opus | inherit (pre-v1.5.0 behaviour using parent model). Applied to config.md, SKILL.md, pmm-save/SKILL.md, and all read-only skill implementations (pmm-query, pmm-dump, pmm-status, pmm-viz).
+Ratified by: user
+
+**2026-03-19 — Context-first recall pattern for Phase 4 and pmm-query** [user:raffi]
+Context: When `session_start=lazy` and `bootstrap_wired=true`, memory files are already loaded in-context via @memory/BOOTSTRAP.md imports. Phase 4 Recall and pmm-query should exploit this: answer queries directly from in-memory files without dispatching an agent. Only fall back to agent for git history when answer not in context, and gate that behind user permission `recall_beyond_window` (prompt or auto mode). Reduces latency and token cost for in-window recalls by 50%+.
+Ratified by: user
+
 **2026-03-18 — Tier-based concurrent sub-agents for Phase 3 Maintain** [user:raffi]
 Context: Single maintain agent handling all 15 files sequentially is slow. Replacing with a three-tier concurrent dispatch: Tier 1 (event files: last.md, timeline.md, summaries.md, progress.md) and Tier 2 (content files: decisions.md, lessons.md, preferences.md, memory.md, processes.md, voices.md, assets.md, standinginstructions.md) run in parallel. Tier 3 (relational files: graph.md, vectors.md, taxonomies.md) runs after both complete, reading updated file state from Tier 1+2. Template-only pre-check also moved to a single concurrent read-only agent rather than sequential per-file checks.
 Ratified by: user

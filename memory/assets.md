@@ -14,8 +14,8 @@ Updated when new entities are introduced.
 
 | Name | Purpose | Notes |
 |---|---|---|
-| poor-man-memory | Git-backed structured memory for Claude Code | 17 files, clone-and-go repo, v1.4.0 shipped with token/message overhead reduction |
-| SKILL.md | Agent dispatch logic for memory operations | Governs init, session-start, maintain (single/tiered), recall, hydrate phases; includes bootstrap_wired cache logic |
+| poor-man-memory | Git-backed structured memory for Claude Code | 17 files, clone-and-go repo, v1.5.0 released 2026-03-19 with readonly_model (haiku default for read-only agents), lazy session_start, early-exit fix; combined 73-90% token cost reduction vs pre-v1.4.0 |
+| SKILL.md | Agent dispatch logic for memory operations | Governs init, session-start (lazy/eager), maintain (single/tiered), recall, hydrate phases; includes bootstrap_wired cache logic, readonly_model dispatch |
 | vectors.md | Semantic similarities, clusters, embedding registry | Companion to graph.md — implicit weighted relationships |
 | graph.md | Explicit typed relationship graph | Uses edge vocabulary from references/graph-syntax.md |
 | config.md | PMM operational configuration | Save cadence, commit behaviour, window sizes, verbosity, active files |

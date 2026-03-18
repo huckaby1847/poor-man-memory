@@ -79,6 +79,22 @@ v1.4.0 released on GitHub with token/message overhead reduction. Repository is l
 - Concurrent sub-agent tier-based dispatch for Phase 3 Maintain (v1.3.3)
 - PR #25 and #27 merged, v1.3.3 released
 
+## Completed (continued)
+
+- Lazy session start (Phase 2) with configurable `session_start` mode (v1.5.0)
+- Read-only model support via configurable `readonly_model` (haiku default) for all read-only agents (v1.5.0)
+- Early-exit bug fix in pmm-save removed for correct false-negative handling (v1.5.0)
+- pmm-settings Q11 + Q12 added for new readonly_model and session_start configs (v1.5.0)
+- All read-only skill implementations updated to use readonly_model (pmm-query, pmm-dump, pmm-status, pmm-viz) (v1.5.0)
+- v1.5.0 released to GitHub, PR #29 merged (2026-03-19)
+- Context-First Recall (Phase 4) — Phase 4 Recall checks if session_start=lazy and bootstrap_wired=true, answers recall queries directly from in-context memory (already loaded via BOOTSTRAP.md) instead of dispatching agent; git history agent only as fallback behind recall_beyond_window permission gate (v1.6.0)
+- Context-First Query (pmm-query) — all 5 query steps (parse, route, search, deep traversal, cross-reference) execute in main context when in lazy mode; git history fallback gated behind recall_beyond_window (v1.6.0)
+- New config setting "Recall Beyond Window" with Mode: prompt default; controls whether sessions can fetch context beyond in-window memory (v1.6.0)
+- pmm-settings Q13 added for recall_beyond_window (prompt/auto) configuration (v1.6.0)
+- templates.md updated with new Recall Beyond Window section in config template (v1.6.0)
+- pmm/version.json bumped 1.5.0 → 1.6.0 (v1.6.0)
+- v1.6.0 Context-First Recall released (2026-03-19)
+
 ## Next
 
 - Add `gh auth switch --user leith-dev` as mandatory step before `gh pr create` in standinginstructions.md (account mix-up 4th repeat)
@@ -87,5 +103,7 @@ v1.4.0 released on GitHub with token/message overhead reduction. Repository is l
 - Add pre-PR checklist for GitHub account identity verification (prevent repeat)
 - Evaluate Phase 4 (Recall) vs /pmm-query interaction and user preferences
 - Further dog-fooding across real projects with /pmm-query
-- Community feedback on v1.3.3 release
+- Community feedback on v1.5.0 release
 - Extended use on nominex-pmm repository itself for self-referential memory iteration
+- Monitor readonly_model performance with real sessions across projects
+- Consider expanded model options (e.g., claude-3.5-sonnet for higher-fidelity recalls)

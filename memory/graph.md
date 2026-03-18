@@ -177,6 +177,30 @@ Use typed relationships from references/graph-syntax.md.
 [[/pmm-settings Q8]] → controls → [[Maintain Strategy]]
 [[GitHub Account Lesson]] → pattern → [[PR #24, #26 under raffi-ismail]] <!-- 4th recurrence of account mix-up -->
 
+## v1.5.0 Read-Only Model & Lazy Session Start
+[[v1.5.0]] → ships-with → [[Readonly Model Config]]
+[[v1.5.0]] → ships-with → [[Lazy Session Start]]
+[[v1.5.0]] → ships-with → [[Early-exit Bug Fix in pmm-save]]
+[[v1.5.0]] → refines → [[pmm-settings]]
+[[readonly_model config]] → controls → [[Phase 2 Session Start Dispatch]]
+[[readonly_model config]] → controls → [[Phase 4 Recall Dispatch]]
+[[readonly_model config]] → controls → [[pmm-query]]
+[[readonly_model config]] → controls → [[pmm-dump]]
+[[readonly_model config]] → controls → [[pmm-status]]
+[[readonly_model config]] → controls → [[pmm-viz]]
+[[readonly_model config]] → stored-in → [[config.md]]
+[[readonly_model: haiku]] → reduces-cost → [[Read-only Operations]] <!-- ~95% cost reduction vs Opus -->
+[[session_start config]] → controls → [[Phase 2 Session Start Dispatch]]
+[[session_start: lazy]] → skips → [[Phase 2 Agent]] <!-- when bootstrap_wired: true -->
+[[session_start: lazy]] → saves-tokens → [[Session Start]] <!-- ~33k tokens per session -->
+[[session_start: lazy]] → depends-on → [[bootstrap_wired flag]]
+[[Phase 2 Agent]] → optional → [[Lazy Session Start]] <!-- skipped when memory already loaded -->
+[[Memory Auto-load]] → enables-via → [[Lazy Session Start]]
+[[Early-exit Bug Fix]] → removes → [[False Negatives in pmm-save]]
+[[pmm-settings Q11]] → controls → [[readonly_model config]]
+[[pmm-settings Q12]] → controls → [[session_start config]]
+[[PR #29]] → ships → [[v1.5.0]]
+
 ## v1.4.0 Token/Message Overhead Reduction
 [[v1.4.0]] → ships-with → [[Bootstrap Check Cache]]
 [[v1.4.0]] → ships-with → [[Pre-check Agent Removal]]

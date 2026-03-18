@@ -309,7 +309,47 @@ After commit, **run the Bootstrap Check** (see `## Bootstrap Check` below).
 
 **When:** User asks about past context ("what did we decide about X", "what's my preference for Y", "what happened with Z").
 
-**Dispatch:** Launch a `general-purpose` agent using the `Readonly Agent Model` from `memory/config.md` (default: `haiku`) with this prompt:
+#### Context-first path (lazy mode)
+
+**Check mode first:** Read `memory/config.md` for `Session Start` and `bootstrap_wired`.
+
+**If `Mode: lazy` AND `bootstrap_wired: true`** — answer directly from in-context memory. No agent dispatch needed — all 16 memory files are already in the context window via the BOOTSTRAP.md @-imports.
+
+**Context-first search — routing table:**
+- Decisions → decisions.md
+- Preferences → preferences.md
+- Tone/voice/reasoning → voices.md
+- Recent work → last.md, progress.md
+- Relationships → graph.md, vectors.md
+- History → timeline.md
+- Rules → standinginstructions.md
+- People/tools → assets.md
+- Facts → memory.md
+- Processes → processes.md
+- Mistakes → lessons.md
+- Categories → taxonomies.md
+
+Search the in-context copies of the relevant files. Cite the source file in your answer. Include attribution tags if present.
+
+**If found in context → answer directly.** No agent needed.
+
+**If not found in context → beyond-window gate:**
+
+Read `memory/config.md` for `## Recall Beyond Window` → `Mode`:
+
+- If `Mode: prompt` — use `AskUserQuestion` with:
+  - **Yes, search git history** — dispatch a minimal agent (git history only, no file reads) with: `git log --all --grep="<keyword>" --oneline` then `git show <hash> -- memory/` for matching commits
+  - **Yes, and don't ask me again** — same agent dispatch, then update `memory/config.md`: replace `- Mode: prompt` under `## Recall Beyond Window` with `- Mode: auto`
+  - **No** — return "No record found in the current memory window."
+- If `Mode: auto` — silently dispatch the minimal git-history agent (no file reads — memory is already in context)
+
+The git-history agent uses the `Readonly Agent Model` from config (default: `haiku`).
+
+**If `Mode: eager` OR `bootstrap_wired: false`** — fall through to the agent dispatch below (files may not be in context).
+
+#### Agent dispatch path (eager mode / bootstrap not wired)
+
+Launch a `general-purpose` agent using the `Readonly Agent Model` from `memory/config.md` (default: `haiku`) with this prompt:
 
 > Search the poor-man-memory files for information about: <user's question>
 > This is a READ-ONLY task — do not edit anything.

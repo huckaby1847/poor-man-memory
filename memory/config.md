@@ -13,7 +13,7 @@ Run `/pmm-settings` at any time to change these.
 ## Commit Behaviour
 
 <!-- When changes are committed to git -->
-- Mode: auto-commit
+- Mode: session-end
 <!-- Options: auto-commit | session-end | manual -->
 
 ## Push Behaviour
@@ -75,7 +75,7 @@ Run `/pmm-settings` at any time to change these.
 ## Readonly Agent Model
 
 <!-- Which model handles read-only agents (session-start, recall, pmm-query, pmm-dump, pmm-status, pmm-viz) -->
-- Readonly model: haiku
+- Readonly model: sonnet
 <!-- Options: haiku (default) | sonnet | opus | inherit -->
 <!-- haiku: cheapest for read-only work — ~95% cheaper than Opus, ~73% cheaper than Sonnet -->
 <!-- inherit: use the parent model (pre-v1.5.0 behaviour) -->
@@ -87,6 +87,14 @@ Run `/pmm-settings` at any time to change these.
 <!-- Options: lazy (default) | eager -->
 <!-- lazy: skip Phase 2 agent — memory files already in context via @memory/BOOTSTRAP.md @-imports. Requires bootstrap_wired: true. Falls through to eager if bootstrap_wired is false. -->
 <!-- eager: always dispatch Phase 2 agent to read and synthesise all memory files -->
+
+## Recall Beyond Window
+
+<!-- Whether to prompt before searching git history for trimmed/old entries -->
+- Mode: prompt
+<!-- Options: prompt (default) | auto -->
+<!-- prompt: ask before dispatching an agent to search git history -->
+<!-- auto: silently search git history when in-context files don't have the answer -->
 
 ## Maintain Strategy
 

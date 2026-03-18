@@ -105,6 +105,14 @@ Run `/pmm-settings` at any time to change these.
 <!-- single: all files updated in one agent dispatch — minimises token/message overhead -->
 <!-- tiered: 3 concurrent agents grouped by file dependency — faster for large installations -->
 
+## Recall Beyond Window
+
+<!-- Whether to prompt before searching git history for trimmed/old entries -->
+- Mode: prompt
+<!-- Options: prompt (default) | auto -->
+<!-- prompt: ask before dispatching an agent to search git history -->
+<!-- auto: silently search git history when in-context files don't have the answer -->
+
 ## Protected Files
 
 <!-- Files that are NEVER committed to git and NEVER read/written by the maintain agent -->
