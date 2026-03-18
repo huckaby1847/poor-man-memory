@@ -20,14 +20,17 @@ The project being worked on IS the poor-man-memory skill itself. The user is act
 - Bootstrap Check utility prevents memory auto-load failures by detecting missing @memory/BOOTSTRAP.md wiring in CLAUDE.md (v1.3.1); cache flag `bootstrap_wired` eliminates file reads once wired (v1.4.0)
 - All memory operations are dispatched via agents (subprocesses), not run in main context
 - Agents edit files only — main context handles all git commits
-- config.md controls phase behaviour: save cadence, commit behaviour, window sizes, verbosity, active file list, maintain strategy (single or tiered)
-- GitHub repo: https://github.com/NominexHQ/poor-man-memory (v1.0 shipped 2026-03-16, v1.4.0 shipped 2026-03-18 with overhead reduction)
+- config.md controls phase behaviour: save cadence, commit behaviour, window sizes, verbosity, active file list, maintain strategy (single or tiered), readonly_model (haiku default for read-only agents), session_start mode (lazy default)
+- GitHub repo: https://github.com/NominexHQ/poor-man-memory (v1.0 shipped 2026-03-16, v1.5.0 shipped 2026-03-19 with readonly_model and lazy session_start)
 - Repository is structured as clone-and-go — not drop-in skill files
 - `pmm/` directory at project root contains user-inspectable artifacts: D3.js library, HTML template, version manifest
 - Interactive D3.js visualization: force-directed graph with type-colored nodes, search filters, time slider with git commits, cluster convex hulls
+- Phase 2 (Session Start) uses configurable `session_start` mode: lazy (default, skips Phase 2 when bootstrap_wired: true, saves ~33k tokens) and eager (always dispatch, pre-v1.5.0 behaviour)
+- All read-only agent dispatches (Phase 2, Phase 4, pmm-query, pmm-dump, pmm-status, pmm-viz) use configurable `readonly_model` (haiku default, ~95% cheaper than Opus, ~73% cheaper than Sonnet)
 - Phase 3 Maintain supports configurable dispatch strategies: single (default, 1 agent, minimal overhead) and tiered (opt-in, 3-agent concurrent, faster for large installs)
 - Phase 5 Hydrate uses batch dispatch: single-file mode (1 agent per target) and batch mode (1 agent for multiple targets, consolidates I/O)
 - Template-only file detection moved from dedicated agent to main context Read calls (v1.4.0 optimization)
+- Early-exit bug fix in pmm-save removed false-negatives when memory not loaded at session start; now always dispatches agent (no-op haiku dispatch when no changes, ~$0.006 cost)
 
 ## Token Economics
 
