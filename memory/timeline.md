@@ -48,3 +48,6 @@ Append-only — entries go in chronological order.
 **2026-03-18** — Implemented /pmm-query with deep traversal (vector clusters, graph edges, taxonomy siblings) and dump mode [agent:leith]
 **2026-03-18** — Updated SKILL.md and README.md with /pmm-query docs: query syntax, modifiers, output modes, examples [agent:leith]
 **2026-03-18** — Tested /pmm-query live: git history fallback, multi-file prose traversal, deep mode synthesis [agent:leith]
+**2026-03-18** — PR #15 merged: /pmm-query skill reviewed by raffi-ismail and merged to main (93f555a) [system:process]
+**2026-03-18** — Private email leak discovered in full git history: r@codefiance.com (15 commits) and leithcodes@gmail.com (2 commits) exposed; remediated via git filter-branch with force-push to main and feature branches (second occurrence) [system:process]
+**2026-03-18** — Git config fixed: local config set to 48171824+raffi-ismail@users.noreply.github.com for future commits; repo confirmed clean with no outstanding work [system:process]

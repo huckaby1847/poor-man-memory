@@ -43,3 +43,7 @@ What to do instead: All commits must go through the PR workflow. Create a branch
 **2026-03-18 — Auto-hydrate template-only files proactively during Phase 5**
 What happened: taxonomies.md remained template-only (empty table) for the entire project lifetime despite 16 other files being fully populated. It was only filled when explicitly requested, not proactively.
 What to do instead: During Phase 5 Hydrate, detect template-only files (those with structure but no data) and populate them proactively from existing memory before the maintain cycle runs. Don't wait for explicit requests to seed new files.
+
+**2026-03-18 — Private email leaked in git history again (second occurrence)**
+What happened: After PR #15 merge, a pre-merge identity check revealed two private emails leaking across 17 commits in the full git history: r@codefiance.com (15 commits) and leithcodes@gmail.com (2 commits). This is the second time this has occurred (first was 2026-03-17). History was rewritten via git filter-branch and force-pushed to three branches.
+What to do instead: The standing process check before merge is mandatory — verify git config is set to noreply address and run identity inspection before every merge. This is a repeat pattern that requires stricter enforcement. Add pre-merge email audit to the PR workflow checklist.

@@ -17,8 +17,14 @@ Leith (leith-dev) creates PRs. Raffi (raffi-ismail) reviews and merges. Squash m
 
 ## Identity Separation
 *Established: 2026-03-16*
+*Strengthened: 2026-03-18 after second email leak*
 
 Public commits on NominexHQ repos use the Leith identity (leith-dev@users.noreply.github.com). Raffi's identity stays off the NominexHQ repo commit history. Raffi acts as admin/reviewer only.
+
+**CRITICAL**: This process has failed twice (2026-03-17 and 2026-03-18), with private emails leaking into git history. Before every merge:
+1. Verify local git config is set to noreply address (e.g., `48171824+raffi-ismail@users.noreply.github.com` for Raffi)
+2. Run identity audit on the branch: `git log --pretty=format:"%an %ae" | sort | uniq` and verify no private emails appear
+3. Only merge after audit passes; if any private emails are found, rewrite history with `git filter-branch` before merging
 
 ## Skill-to-Repo Sync
 *Established: 2026-03-16*
