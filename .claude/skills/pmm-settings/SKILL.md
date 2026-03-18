@@ -71,6 +71,7 @@ If active files changed:
 - Update `memory/BOOTSTRAP.md` to list only the active files in the load order
 - If files were deactivated, do NOT delete them — just remove them from BOOTSTRAP.md
 - If files were activated that don't exist yet, create them from templates
+- **For each newly activated file**, dispatch Phase 5 (Hydrate) using the prompt from `.claude/skills/poor-man-memory/SKILL.md`. This ensures activated files start with synthesized content from existing memory, not empty templates. Commit hydrated files separately: `git add memory/<file> && git commit -m "memory: hydrate <file> from existing context"`
 
 ### Step 4 — Commit
 

@@ -47,6 +47,7 @@ If you already have a project and just want to drop in the memory system:
    .claude/skills/poor-man-memory/    # Main skill + reference docs
    .claude/skills/pmm-save/           # Explicit save command
    .claude/skills/pmm-query/          # Memory search with filters
+   .claude/skills/pmm-hydrate/        # On-demand file hydration
    .claude/skills/pmm-settings/       # Settings command
    .claude/skills/pmm-dump/           # ASCII memory dump (text visualization)
    .claude/skills/pmm-viz/            # Interactive D3.js graph (browser)
@@ -107,6 +108,7 @@ The `memory/` directory will be created inside your project. Add it to version c
 |---|---|
 | `/pmm-save` | Explicitly trigger a memory save |
 | `/pmm-query <question>` | Search memory files — supports attribution, date, and file filters |
+| `/pmm-hydrate <file\|all> [force]` | Populate empty/thin memory files from existing context |
 | `/pmm-settings` | Change memory system configuration |
 | `/pmm-dump` | ASCII memory dump — three levels: status, summary, detailed |
 | `/pmm-viz` | Interactive D3.js memory graph — opens in browser |

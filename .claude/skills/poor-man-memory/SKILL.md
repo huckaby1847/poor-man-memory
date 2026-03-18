@@ -430,6 +430,18 @@ Supports free-text questions plus optional filters (attribution, date range, fil
 
 This command is implemented as a separate skill at `.claude/skills/pmm-query/SKILL.md`.
 
+### /pmm-hydrate
+
+Populate empty or thin memory files by synthesizing content from all other memory files.
+Useful after activating new files via `/pmm-settings`, after a `/pmm-update`, or to refresh stale files.
+
+- `/pmm-hydrate` — show usage and list active files
+- `/pmm-hydrate all` — hydrate all template-only files
+- `/pmm-hydrate taxonomies` — hydrate a specific file
+- `/pmm-hydrate taxonomies force` — re-synthesize even if file has content
+
+This command is implemented as a separate skill at `.claude/skills/pmm-hydrate/SKILL.md`.
+
 ### /pmm-update
 
 Checks the upstream PMM repository for updates and applies them safely. System files (skills, templates, artifacts) are updated; user data (memory/) is never touched. Uses `pmm/version.json` as the version manifest.

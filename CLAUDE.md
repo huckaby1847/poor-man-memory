@@ -15,6 +15,7 @@ This will prompt you for preferences (save cadence, verbosity, active files, etc
 ## Commands
 
 - `/pmm-save` — Explicitly trigger a memory save
+- `/pmm-hydrate <file|all> [force]` — Populate empty/thin memory files from existing context
 - `/pmm-settings` — Change memory system configuration at any time
 - `/pmm-dump` — ASCII memory dump (three levels: status, summary, detailed)
 - `/pmm-viz` — Interactive D3.js memory graph (opens in browser)
