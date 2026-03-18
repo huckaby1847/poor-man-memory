@@ -47,3 +47,15 @@ What to do instead: During Phase 5 Hydrate, detect template-only files (those wi
 **2026-03-18 — Private email leaked in git history again (second occurrence)**
 What happened: After PR #15 merge, a pre-merge identity check revealed two private emails leaking across 17 commits in the full git history: [redacted personal email] (15 commits) and [redacted personal email] (2 commits). This is the second time this has occurred (first was 2026-03-17). History was rewritten via git filter-branch and force-pushed to three branches.
 What to do instead: The standing process check before merge is mandatory — verify git config is set to noreply address and run identity inspection before every merge. This is a repeat pattern that requires stricter enforcement. Add pre-merge email audit to the PR workflow checklist.
+
+**2026-03-18 — Quoted shell wildcards in permission rules break validation** [agent:leith]
+What happened: Permission rule `Bash(git commit -m 'memory:*')` had `*` inside a quoted string, causing Claude Code startup validation to fail. Rule was skipped silently, leaving users without permission for critical operations.
+What to do instead: Wildcards must NOT be inside quoted strings in permission rules. Use `Bash(git commit -m *)` instead. Fixed in both nominex-pmm .claude/settings.json and poor-man-memory-repo template. Check SKILL.md for outdated example documentation.
+
+**2026-03-18 — Repeated GitHub account mix-up (third time, PR #12 → #21 → ???)** [system:process]
+What happened: PR #21 created under raffi-ismail instead of leith-dev. This is the third time this mistake has occurred (PR #12 and now #21). Pattern: wrong account selected during gh pr create, only caught post-hoc.
+What to do instead: Add pre-PR checklist step that verifies GitHub CLI is authenticated as the correct identity (leith-dev) before running gh pr create. Consider git config aliases or environment checks to enforce branch → PR identity. Document feedback in memory/preferences.md and standinginstructions.md.
+
+**2026-03-18 — Settings merge category blocks /pmm-update auto-apply** [agent:leith]
+What happened: `.claude/settings.json` in version.json has category `merge` (manual merge required), so /pmm-update will NOT auto-apply the Bash wildcard fix to existing user installs. Users must update manually or re-run /pmm-update with confirmation.
+What to do instead: Consider whether critical security/stability fixes should be in an auto-apply category. For settings.json changes, retain merge category (risky to auto-merge) but document fix prominently in release notes and send targeted notification to users (future: add notification framework to /pmm-update).

@@ -17,6 +17,7 @@ The project being worked on IS the poor-man-memory skill itself. The user is act
 - 5 operational phases: Init, Session Start, Maintain, Recall, Hydrate
 - 7 skills: poor-man-memory (main), pmm-settings (config), pmm-dump (ASCII viz), pmm-viz (interactive D3.js), pmm-update (upstream sync), pmm-query (explicit recall), pmm-hydrate (explicit hydration)
 - 4 reference files: graph-syntax.md, vector-syntax.md, voice-syntax.md, templates.md
+- Bootstrap Check utility prevents memory auto-load failures by detecting missing @memory/BOOTSTRAP.md wiring in CLAUDE.md (v1.3.1)
 - All memory operations are dispatched via agents (subprocesses), not run in main context
 - Agents edit files only — main context handles all git commits
 - config.md controls phase behaviour: save cadence, commit behaviour, window sizes, verbosity, active file list

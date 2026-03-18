@@ -10,9 +10,9 @@ Lightweight trigger for Phase 3 (Maintain) of Poor Man's Memory. Captures curren
 ## Behaviour
 
 1. Read `memory/config.md` to get the maintain agent model (default: `haiku`) and active files list
-2. **Template-only check:** For each active file, quickly check if it's template-only (strip blank lines, headings, comments, table headers — if 0 content lines remain, it's template-only). If ANY active files are template-only AND at least 3 other files are populated, dispatch Phase 5 (Hydrate) for each template-only file BEFORE the maintain cycle. Use the Phase 5 prompt from `.claude/skills/poor-man-memory/SKILL.md`. Commit hydrated files separately: `git add memory/ && git commit -m "memory: hydrate <file> from existing context"`
+2. **Template-only check:** Dispatch a single read-only agent to check all active files concurrently for template-only status (strip blank lines, headings, comments, table headers — if 0 content lines remain, it's template-only). If ANY active files are template-only AND at least 3 other files are populated, dispatch Phase 5 (Hydrate) for each template-only file BEFORE the maintain cycle. Use the Phase 5 prompt from `.claude/skills/poor-man-memory/SKILL.md`. Commit hydrated files separately: `git add memory/ && git commit -m "memory: hydrate <file> from existing context"`
 3. Build a "What changed" summary by reviewing the current conversation since the last save — identify decisions, facts, preferences, milestones, lessons, or any other notable events
-4. Dispatch the maintain agent using the Phase 3 prompt from the main `poor-man-memory` skill (`.claude/skills/poor-man-memory/SKILL.md`, Phase 3 — Maintain section)
+4. Dispatch the maintain agents using the Phase 3 tier-based dispatch from the main `poor-man-memory` skill (`.claude/skills/poor-man-memory/SKILL.md`, Phase 3 — Maintain section). Tier 1 and Tier 2 run in parallel; Tier 3 runs after both complete.
 5. After the agent returns, commit. Read `memory/config.md` for the `Auto-push` setting:
    ```bash
    # Always:

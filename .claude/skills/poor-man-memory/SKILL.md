@@ -203,14 +203,24 @@ Replace `<skill-base>` with the actual skill base directory path.
 
 **When:** New information emerges that should persist (see trigger table below).
 
-**Pre-check — Hydrate template-only files:** Before dispatching the maintain agent, check all active files for template-only status (strip blank lines, headings, comments, table headers — if 0 content lines remain, it's template-only). If any active files are template-only AND at least 3 other files are populated, dispatch Phase 5 (Hydrate) for each template-only file first. This ensures files that were empty since init get populated from existing context before the maintain cycle runs. Commit hydrated files separately.
+**Pre-check — Hydrate template-only files:** Before dispatching the maintain agents, check all active files for template-only status in a single concurrent read-only agent (dispatch one agent that reads all active files and returns a list of which are template-only — faster than sequential per-file checks). Strip blank lines, headings, comments, table headers — if 0 content lines remain, it's template-only. If any active files are template-only AND at least 3 other files are populated, dispatch Phase 5 (Hydrate) for each template-only file first. Commit hydrated files separately before the maintain cycle.
 
-**Dispatch:** Launch a `general-purpose` agent (in background when possible) with the model from `config.md` (default: `haiku`) and this prompt:
+**Dispatch:** Use tier-based concurrent agents for efficiency. Files are grouped into three tiers by dependency:
+
+- **Tier 1 — Event files** (stateless, no cross-file deps): `last.md`, `timeline.md`, `summaries.md`, `progress.md`
+- **Tier 2 — Content files** (semantic, loosely coupled): `decisions.md`, `lessons.md`, `preferences.md`, `memory.md`, `processes.md`, `voices.md`, `assets.md`, `standinginstructions.md`
+- **Tier 3 — Relational files** (depend on Tier 1+2 updated state): `graph.md`, `vectors.md`, `taxonomies.md`
+
+Launch the Tier 1 and Tier 2 agents **simultaneously** (use `run_in_background: true` for one of them). After both return, launch the Tier 3 agent — it reads the file state already written by Tier 1+2 agents before updating relational structure.
+
+Each agent uses the model from `config.md` (default: `haiku`). Use the following prompt for each tier, substituting `<tier-file-list>`:
 
 > Update the poor-man-memory files. This is a WRITE task — edit files only. Do NOT run any git commands.
 >
 > Working directory: `<project-root>`
 > Reference files are in `<skill-base>/references/` (graph-syntax.md, vector-syntax.md for format rules).
+>
+> **Scope:** Only update files in this list — ignore all others: `<tier-file-list>`
 >
 > **First:** Read `memory/config.md` for active configuration. Respect:
 > - **Window size** — use the configured max entries for timeline.md and summaries.md
@@ -269,9 +279,9 @@ Replace `<skill-base>` with the actual skill base directory path.
 > | `taxonomies.md` | New category, classification system, or naming convention established |
 > | `standinginstructions.md` | User issues a persistent rule or directive |
 >
-> Return a one-line summary of what was updated.
+> Return a one-line summary of what was updated in your scoped files.
 
-Replace `<project-root>`, `<skill-base>`, and the "What changed" block with actual values.
+Replace `<project-root>`, `<skill-base>`, `<tier-file-list>`, and the "What changed" block with actual values for each tier agent.
 
 **After agent returns:** Main context commits. Read `memory/config.md` for the `Auto-push` setting:
 

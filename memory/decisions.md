@@ -100,6 +100,26 @@ Ratified by: consensus
 Context: /pmm-hydrate is a multi-mode skill supporting: (1) no args → show usage hint and available modes; (2) all → hydrate all template-only files; (3) <file> → target one file; (4) force → re-synthesize even if already populated. Default behavior is informational, not destructive. Users must opt-in explicitly.
 Ratified by: consensus
 
+**2026-03-18 — Bootstrap Check reminder system across all PMM surfaces** [agent:leith]
+Context: Memory auto-load at session start depends on @memory/BOOTSTRAP.md being imported in CLAUDE.md. If that wiring is missing, the user's memory never loads despite PMM being initialized. Implemented reusable Bootstrap Check utility that detects missing import and prompts user with three options: (1) Fix it now (auto-wires CLAUDE.md + commits), (2) Remind me next time, (3) Never remind me (sets bootstrap_reminder: off in config). Check runs on all 6 surfaces: init memory, /pmm-save, /pmm-hydrate, /pmm-update, /pmm-status, /pmm-query. Ensures users are aware of and can easily fix this critical wiring step.
+Ratified by: consensus
+
+**2026-03-18 — Wire BOOTSTRAP.md into CLAUDE.md for automatic memory auto-load at session start** [user:raffi]
+Context: Bootstrap Check system prompts users to wire @memory/BOOTSTRAP.md into CLAUDE.md under a `## Memory` section. This import is critical — without it, memory never auto-loads despite PMM being initialized. User selected "Fix it now", which auto-wired CLAUDE.md and committed the change (commit: pmm: wire BOOTSTRAP.md into CLAUDE.md for auto-load). Memory auto-load now active for this project.
+Ratified by: user
+
 **2026-03-16 — Use agents (subprocesses) for all memory operations**
 Context: Main context window was getting polluted with file I/O and git ops during memory phases. Dispatching agents keeps the main window clean — agents do the heavy lifting and return concise results.
+Ratified by: user
+
+**2026-03-18 — Wildcards in permission rules must NOT be inside quoted strings** [agent:leith]
+Context: Permission rule `Bash(git commit -m 'memory:*')` failed validation because `*` was quoted. Correct form: `Bash(git commit -m *)`. Validation error was silent, rule skipped at startup. Applied fix to both active project .claude/settings.json and poor-man-memory-repo template.
+Ratified by: consensus
+
+**2026-03-18 — Retain settings.json in merge category for /pmm-update (not auto-apply)** [agent:leith]
+Context: Bash wildcard fix is in .claude/settings.json, which has category `merge` in version.json. This prevents /pmm-update from auto-applying it to existing installs (risky to auto-merge settings files). Fix will require manual update or user confirmation during /pmm-update. Trade-off accepted: safety (no surprise setting changes) over convenience (auto-apply fix).
+Ratified by: consensus
+
+**2026-03-18 — Tier-based concurrent sub-agents for Phase 3 Maintain** [user:raffi]
+Context: Single maintain agent handling all 15 files sequentially is slow. Replacing with a three-tier concurrent dispatch: Tier 1 (event files: last.md, timeline.md, summaries.md, progress.md) and Tier 2 (content files: decisions.md, lessons.md, preferences.md, memory.md, processes.md, voices.md, assets.md, standinginstructions.md) run in parallel. Tier 3 (relational files: graph.md, vectors.md, taxonomies.md) runs after both complete, reading updated file state from Tier 1+2. Template-only pre-check also moved to a single concurrent read-only agent rather than sequential per-file checks.
 Ratified by: user

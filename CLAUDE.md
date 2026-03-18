@@ -34,6 +34,10 @@ For automatic memory saves on an interval:
 
 This runs `/pmm-save` every 5 minutes, capturing session state without manual intervention.
 
+## Memory
+
+@memory/BOOTSTRAP.md
+
 ## How It Works
 
 Memory operations run in background agents — the main context window stays clean. Git commits after every update create an immutable audit trail. See `memory/config.md` for current settings.
