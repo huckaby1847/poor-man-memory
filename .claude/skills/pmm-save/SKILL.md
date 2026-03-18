@@ -21,7 +21,8 @@ Lightweight trigger for Phase 3 (Maintain) of Poor Man's Memory. Captures curren
    # Only if Auto-push is "on" in config.md:
    git push origin main || echo "⚠️  Push failed — changes committed locally but not pushed"
    ```
-6. Respect the verbosity setting from `config.md`:
+6. **Run the Bootstrap Check** from `.claude/skills/poor-man-memory/SKILL.md` (`## Bootstrap Check` section).
+7. Respect the verbosity setting from `config.md`:
    - `silent` — no output, just the agent status indicator
    - `summary` — one-line confirmation (e.g. "Memory saved: updated decisions.md, timeline.md")
    - `verbose` — full detail of what changed

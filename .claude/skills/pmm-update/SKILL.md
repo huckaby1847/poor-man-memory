@@ -146,6 +146,7 @@ If user approves, dispatch a `general-purpose` agent:
    ```
 
 5. **Report** summary of what changed.
+6. **Run the Bootstrap Check** from `.claude/skills/poor-man-memory/SKILL.md` (`## Bootstrap Check` section).
 
 ## Notes
 

@@ -91,6 +91,7 @@ Output the agent's returned string verbatim — it contains the fully formatted 
 > ### Step 7 — Generate warnings
 >
 > Check for:
+> - **Bootstrap not wired:** Check if `<project-root>/CLAUDE.md` contains `@memory/BOOTSTRAP.md`. If it does NOT, and `memory/config.md` does NOT contain `bootstrap_reminder: off`, add warning: `⚠ CLAUDE.md does not import @memory/BOOTSTRAP.md — memory is not auto-loaded at session start. Run /pmm-save or /pmm-status to resolve.`
 > - **Template-only active files:** Any active file (per config.md) that is still template-only
 > - **Stale files:** Any file not modified in >7 days (only warn if project has commits in the last 7 days)
 > - **Stale last.md:** `last.md` not updated in the current session (last modified >2 hours ago)
@@ -135,6 +136,8 @@ Output the agent's returned string verbatim — it contains the fully formatted 
 > If there are no warnings, show "No warnings" instead of the Warnings section.
 > All times should be human-readable ("2 min ago", "3 hr ago").
 > Keep the output compact and scannable.
+
+After outputting the dashboard, **run the Bootstrap Check** from `.claude/skills/poor-man-memory/SKILL.md` (`## Bootstrap Check` section). The dashboard already shows the warning in text; the Bootstrap Check presents the interactive fix prompt.
 
 ## Notes
 

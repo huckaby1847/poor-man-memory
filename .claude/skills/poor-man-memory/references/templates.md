@@ -92,6 +92,10 @@ Run `/pmm-settings` at any time to change these.
 <!-- never: pre-commit hook blocks any commit containing memory/secrets.md -->
 <!-- allow-with-warning: hook warns but does not block. Only use if you understand the implications: -->
 <!--   secrets.md contents will be in git history and pushed to your remote — irreversible for public repos -->
+- bootstrap_reminder: on
+<!-- bootstrap_reminder options: on (default) | off -->
+<!-- on: PMM will prompt to wire @memory/BOOTSTRAP.md into CLAUDE.md if not already done -->
+<!-- off: suppress the reminder permanently (memory auto-load relies on manual skill triggers) -->
 ```
 
 ---
@@ -126,7 +130,6 @@ All memory operations run via agents (subprocesses) — never in the main contex
 
 At session start, dispatch an agent to read all files and return a structured summary:
 
-@memory/BOOTSTRAP.md
 @memory/standinginstructions.md
 @memory/progress.md
 @memory/last.md

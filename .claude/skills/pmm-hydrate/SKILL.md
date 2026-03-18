@@ -84,6 +84,10 @@ After all targets are processed, report:
 - A brief summary of what was inferred for each (the agent's return value)
 - If nothing was hydrated, say so
 
+### Step 6 — Bootstrap Check
+
+**Run the Bootstrap Check** from `.claude/skills/poor-man-memory/SKILL.md` (`## Bootstrap Check` section).
+
 ## Notes
 
 - The hydrate agent reads all existing memory files as context — the richer the existing memory, the better the hydration result

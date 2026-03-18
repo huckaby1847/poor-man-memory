@@ -76,6 +76,7 @@ If you already have a project and just want to drop in the memory system:
    This project uses Poor Man's Memory. Run `init memory` if the `memory/` directory doesn't exist.
    Run `/pmm-settings` to configure.
    ```
+   Then ensure your `CLAUDE.md` contains `@memory/BOOTSTRAP.md` (after running `init memory`). Without this line, memory files are not automatically loaded into Claude's context at session start — memory recall will be empty each session. PMM will prompt you to add this after init and each save.
 
 4. Open the project with Claude Code and say `init memory`.
 
