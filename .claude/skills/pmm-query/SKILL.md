@@ -24,9 +24,29 @@ Explicitly query PMM memory files with optional filtering. Runs as a subagent to
 ## Behaviour
 
 1. If `$ARGUMENTS` is empty, ask the user what to search for before proceeding.
-2. **Bootstrap Check** — before dispatching the query agent, run the Bootstrap Check from `.claude/skills/poor-man-memory/SKILL.md` (`## Bootstrap Check` section). If the check fires (CLAUDE.md is not wired), note inline: *"Note: memory files are not auto-loaded at session start — query results reflect files on disk but Claude may not have this context in future sessions until the bootstrap wiring is set up."* Then proceed with the query regardless of what the user chooses.
-3. Dispatch a `general-purpose` agent using the `Readonly Agent Model` from `memory/config.md` (default: `haiku`) with the prompt below. Replace `<project-root>` with the actual project root path and `<user-query>` with `$ARGUMENTS`.
-3. Output the agent's returned string verbatim.
+2. **Bootstrap Check** — before querying, run the Bootstrap Check from `.claude/skills/poor-man-memory/SKILL.md` (`## Bootstrap Check` section). If the check fires (CLAUDE.md is not wired), note inline: *"Note: memory files are not auto-loaded at session start — query results reflect files on disk but Claude may not have this context in future sessions until the bootstrap wiring is set up."* Then proceed with the query regardless of what the user chooses.
+3. **Check mode:** Read `memory/config.md` for `Session Start` and `bootstrap_wired`.
+
+**If `Mode: lazy` AND `bootstrap_wired: true`** — execute the query steps below directly in main context (no agent dispatch). All memory files are already in the context window via BOOTSTRAP.md @-imports.
+
+Run Steps 1–4 of the Agent Prompt below in main context:
+- **Step 1 — Parse Query:** extract keyword, attribution filter, date filter, file scope, deep flag, dump flag from `$ARGUMENTS`
+- **Step 2 — Route to Relevant Files:** use the routing table to identify target files; read `memory/config.md` to confirm active files
+- **Step 3 — Search:** search the in-context copies of the target files; apply attribution/date filters
+- **Step 4 — Deep Traversal** (if `deep=true`): traverse vectors.md, graph.md, taxonomies.md — all already in context
+- **Step 5 — Fallback Chain (git history):** if Steps 3+4 returned no results, apply the **beyond-window gate**:
+  - Read `memory/config.md` for `## Recall Beyond Window` → `Mode`
+  - If `Mode: prompt` — use `AskUserQuestion`:
+    - **Yes, search git history** — dispatch a minimal agent (git history only) with: `git log --all --grep="<keyword>" --oneline` then `git show <hash> -- memory/` for matches; incorporate results into Step 7 output
+    - **Yes, and don't ask me again** — same dispatch, then update `memory/config.md`: replace `- Mode: prompt` under `## Recall Beyond Window` with `- Mode: auto`
+    - **No** — return "No record found in the current memory window."
+  - If `Mode: auto` — silently dispatch the minimal git-history agent (no file reads needed)
+- **Step 6 — Cross-Reference Enrichment** (if not deep mode): check graph.md/assets.md in context for named entities
+- **Step 7 — Format Output:** format per the prose/dump rules in the Agent Prompt below; output directly (no agent return)
+
+**If `Mode: eager` OR `bootstrap_wired: false`** — dispatch the full agent as described below.
+
+4. **Eager mode:** Dispatch a `general-purpose` agent using the `Readonly Agent Model` from `memory/config.md` (default: `haiku`) with the prompt below. Replace `<project-root>` with the actual project root path and `<user-query>` with `$ARGUMENTS`. Output the agent's returned string verbatim.
 
 ### Agent Prompt
 

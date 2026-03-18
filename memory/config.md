@@ -88,6 +88,14 @@ Run `/pmm-settings` at any time to change these.
 <!-- lazy: skip Phase 2 agent — memory files already in context via @memory/BOOTSTRAP.md @-imports. Requires bootstrap_wired: true. Falls through to eager if bootstrap_wired is false. -->
 <!-- eager: always dispatch Phase 2 agent to read and synthesise all memory files -->
 
+## Recall Beyond Window
+
+<!-- Whether to prompt before searching git history for trimmed/old entries -->
+- Mode: prompt
+<!-- Options: prompt (default) | auto -->
+<!-- prompt: ask before dispatching an agent to search git history -->
+<!-- auto: silently search git history when in-context files don't have the answer -->
+
 ## Maintain Strategy
 
 <!-- How the maintain phase dispatches agents — controls agent count per /pmm-save -->

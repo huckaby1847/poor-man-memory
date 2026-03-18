@@ -87,6 +87,13 @@ v1.4.0 released on GitHub with token/message overhead reduction. Repository is l
 - pmm-settings Q11 + Q12 added for new readonly_model and session_start configs (v1.5.0)
 - All read-only skill implementations updated to use readonly_model (pmm-query, pmm-dump, pmm-status, pmm-viz) (v1.5.0)
 - v1.5.0 released to GitHub, PR #29 merged (2026-03-19)
+- Context-First Recall (Phase 4) — Phase 4 Recall checks if session_start=lazy and bootstrap_wired=true, answers recall queries directly from in-context memory (already loaded via BOOTSTRAP.md) instead of dispatching agent; git history agent only as fallback behind recall_beyond_window permission gate (v1.6.0)
+- Context-First Query (pmm-query) — all 5 query steps (parse, route, search, deep traversal, cross-reference) execute in main context when in lazy mode; git history fallback gated behind recall_beyond_window (v1.6.0)
+- New config setting "Recall Beyond Window" with Mode: prompt default; controls whether sessions can fetch context beyond in-window memory (v1.6.0)
+- pmm-settings Q13 added for recall_beyond_window (prompt/auto) configuration (v1.6.0)
+- templates.md updated with new Recall Beyond Window section in config template (v1.6.0)
+- pmm/version.json bumped 1.5.0 → 1.6.0 (v1.6.0)
+- v1.6.0 Context-First Recall released (2026-03-19)
 
 ## Next
 
