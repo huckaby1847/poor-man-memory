@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "released": "2026-03-18",
   "upstream": "https://github.com/NominexHQ/poor-man-memory.git",
   "files": {
@@ -15,6 +15,8 @@
       ".claude/skills/pmm-viz/SKILL.md",
       ".claude/skills/pmm-status/SKILL.md",
       ".claude/skills/pmm-update/SKILL.md",
+      ".claude/skills/pmm-query/SKILL.md",
+      ".claude/skills/pmm-hydrate/SKILL.md",
       "pmm/d3.v7.min.js",
       "pmm/pmm-viz-template.html",
       "pmm/version.json",
