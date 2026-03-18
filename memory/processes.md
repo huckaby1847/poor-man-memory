@@ -30,3 +30,15 @@ After editing files in `.claude/skills/`, the changes are copied to `poor-man-me
 
 - `memory: <what>` — for memory file updates
 - `feat:` / `fix:` / `docs:` — for skill/code changes
+
+## /pmm-query Query Pattern
+*Established: 2026-03-18*
+
+Explicit recall command separate from Phase 4 Recall. Supports modular filtering and traversal:
+- Free-text search (default prose output with source citations)
+- `by <namespace:name>` — filter by author attribution
+- `since <date>` / `before <date>` — temporal bounds
+- `in <file>` — scope to specific memory file(s)
+- `deep` — expand via vector clusters (≥0.6 similarity), graph edge traversal, taxonomy sibling broadening
+- `dump` — switch to verbatim entries grouped by file (instead of prose)
+- Modifiers stack: e.g., `deep what was...` or `dump by user:raffi in decisions.md since 2026-03-17`

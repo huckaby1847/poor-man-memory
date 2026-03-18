@@ -15,7 +15,7 @@ The project being worked on IS the poor-man-memory skill itself. The user is act
 
 - PMM is a 17-file markdown memory system backed by git
 - 5 operational phases: Init, Session Start, Maintain, Recall, Hydrate
-- 5 skills: poor-man-memory (main), pmm-settings (config), pmm-dump (ASCII viz), pmm-viz (interactive D3.js), pmm-update (upstream sync)
+- 6 skills: poor-man-memory (main), pmm-settings (config), pmm-dump (ASCII viz), pmm-viz (interactive D3.js), pmm-update (upstream sync), pmm-query (explicit recall)
 - 4 reference files: graph-syntax.md, vector-syntax.md, voice-syntax.md, templates.md
 - All memory operations are dispatched via agents (subprocesses), not run in main context
 - Agents edit files only — main context handles all git commits

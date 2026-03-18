@@ -84,6 +84,14 @@ Ratified by: consensus
 Context: PMM needs a place to store sensitive data (API keys, tokens, auth credentials) that is never committed to git. Planned feature: memory/secrets.md is gitignored, local-only, not readable/writable by maintain agent. Pattern: .gitignore rules + git reset in commit step.
 Ratified by: consensus
 
+**2026-03-18 — /pmm-query: explicit recall command with prose output by default** [agent:leith]
+Context: Designed separate explicit recall skill distinct from Phase 4 Recall. Supports free-text search, attribution filter (by namespace:name), date filters (since/before), file scope (in <file>), deep traversal mode (expands via vectors/graph/taxonomies), dump modifier (verbatim entries). Default output is synthesized narrative prose with inline source citations and Sources footer; dump mode shows verbatim entries grouped by file.
+Ratified by: consensus
+
+**2026-03-18 — Deep traversal expands results via vector clusters, graph edges, and taxonomy siblings** [agent:leith]
+Context: When deep mode specified in /pmm-query, agent: (a) finds vector cluster membership + similarity pairs ≥0.6 from vectors.md, (b) traverses one-hop edges from graph.md, (c) broadens via taxonomy siblings from taxonomies.md. Results tagged with provenance [via vectors], [via graph], [via taxonomy]. Enables multi-file cross-reference discovery.
+Ratified by: consensus
+
 **2026-03-16 — Use agents (subprocesses) for all memory operations**
 Context: Main context window was getting polluted with file I/O and git ops during memory phases. Dispatching agents keeps the main window clean — agents do the heavy lifting and return concise results.
 Ratified by: user

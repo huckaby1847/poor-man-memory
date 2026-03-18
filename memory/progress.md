@@ -53,10 +53,12 @@ v1.0.0 released on GitHub. Repository is live at https://github.com/NominexHQ/po
 - Fixed Phase 5 auto-hydrate to detect and proactively populate template-only files
 - Planned secrets.md feature (gitignored credentials storage)
 - Feedback captured: enforce branch → PR → merge workflow, never push directly to main
+- Designed and implemented /pmm-query skill for explicit recall with prose output, filtering, and deep traversal
+- Updated SKILL.md and README.md with /pmm-query documentation and examples
 
 ## Next
 
 - Implement secrets.md feature with gitignore and maintain agent access control
-- Further dog-fooding across real projects
-- Community feedback on v1.0
-- Evaluate v1.1 feature set based on usage patterns
+- Further dog-fooding across real projects with /pmm-query
+- Community feedback on v1.0 and v1.1 (pmm-query)
+- Evaluate Phase 4 (Recall) vs Phase 6 (/pmm-query) interaction and user preferences

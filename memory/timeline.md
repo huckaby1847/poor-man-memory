@@ -44,3 +44,7 @@ Append-only — entries go in chronological order.
 **2026-03-18** — Added token burn estimates to /pmm-status and /pmm-dump (chars/4 read, diff lines × 20 / 4 write)
 **2026-03-18** — Fixed Phase 5 auto-hydrate to detect and populate template-only files proactively
 **2026-03-18** — Planned secrets.md feature: gitignored local-only storage for API keys, tokens, credentials
+**2026-03-18** — Designed /pmm-query skill: explicit recall command with prose output, attribution/date/file/deep filters [agent:leith]
+**2026-03-18** — Implemented /pmm-query with deep traversal (vector clusters, graph edges, taxonomy siblings) and dump mode [agent:leith]
+**2026-03-18** — Updated SKILL.md and README.md with /pmm-query docs: query syntax, modifiers, output modes, examples [agent:leith]
+**2026-03-18** — Tested /pmm-query live: git history fallback, multi-file prose traversal, deep mode synthesis [agent:leith]

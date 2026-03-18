@@ -108,3 +108,21 @@ Use typed relationships from references/graph-syntax.md.
 [[Agents]] → writes-to → [[Memory Files]]
 [[Main Context]] → uses → [[git]]
 [[/pmm-viz]] → triggers → [[Subagent for D3.js rendering]]
+
+## Query & Recall
+[[Phase 4 Recall]] → implicit → [[Automatic summarization]]
+[[/pmm-query]] → explicit → [[Manual search and filtering]]
+[[/pmm-query]] → extends → [[Phase 4 Recall]]
+[[/pmm-query]] → uses → [[vectors.md]] <!-- for deep traversal: similarity pairs ≥0.6 -->
+[[/pmm-query]] → uses → [[graph.md]] <!-- for deep traversal: one-hop edge traversal -->
+[[/pmm-query]] → uses → [[taxonomies.md]] <!-- for deep traversal: sibling broadening -->
+[[/pmm-query]] → supports → [[Free-text search]]
+[[/pmm-query]] → supports → [[Attribution filter (by namespace:name)]]
+[[/pmm-query]] → supports → [[Date filters (since/before)]]
+[[/pmm-query]] → supports → [[File scope (in <file>)]]
+[[/pmm-query]] → supports → [[Deep traversal mode]]
+[[/pmm-query]] → supports → [[Prose output (default)]]
+[[/pmm-query]] → supports → [[Dump mode (verbatim)]]
+[[Deep traversal]] → expands-via → [[Vector clusters]]
+[[Deep traversal]] → expands-via → [[Graph edges]]
+[[Deep traversal]] → expands-via → [[Taxonomy siblings]]
