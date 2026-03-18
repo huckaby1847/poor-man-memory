@@ -25,6 +25,7 @@ Read `memory/config.md` and display the current settings to the user as a summar
 > - Verbosity: [current]
 > - Repository visibility: [current]
 > - Maintain agent model: [current]
+> - Maintain strategy: [current]
 > - Secrets in git: [current]
 > - Active files: [count] of 15 active
 > - Deactivated: [list, or "none"]
@@ -71,11 +72,17 @@ Use `AskUserQuestion` to present the same questions from Phase 1 of the main ski
 
 *Note: Session-start and recall agents always use your current model.*
 
-**Q8: Secrets in git** — Should `memory/secrets.md` be committed to git?
+**Q8: Maintain strategy** — How should memory saves dispatch agents?
+- Single (default) — all files updated in one agent dispatch per save (minimises token/message overhead, budget-friendly)
+- Tiered — 3 concurrent agents grouped by file dependency (faster for large installations with many active files)
+
+*Explain: Single mode saves 2 agent dispatches per /pmm-save. Tiered mode is faster if you have a large memory installation and need parallel tier updates — but costs 3x the agent dispatches.*
+
+**Q9: Secrets in git** — Should `memory/secrets.md` be committed to git?
 - Never (default) — pre-commit hook blocks any commit containing secrets.md
 - Allow with warning — hook warns but does not block. **Only use this if you understand the implications: secrets.md contents will be in git history and permanently exposed if pushed to a public remote.**
 
-**Q9: Active files** — Which memory files to activate? (multi-select, config.md and BOOTSTRAP.md always active)
+**Q10: Active files** — Which memory files to activate? (multi-select, config.md and BOOTSTRAP.md always active)
 - memory.md, assets.md, decisions.md, processes.md, preferences.md, voices.md, lessons.md, timeline.md, summaries.md, progress.md, last.md, graph.md, vectors.md, taxonomies.md, standinginstructions.md
 
 ### Step 3 — Write updated config

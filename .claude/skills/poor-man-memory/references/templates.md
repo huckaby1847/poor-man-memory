@@ -81,6 +81,14 @@ Run `/pmm-settings` at any time to change these.
 - taxonomies.md: active
 - standinginstructions.md: active
 
+## Maintain Strategy
+
+<!-- How the maintain phase dispatches agents — controls agent count per /pmm-save -->
+- Strategy: single
+<!-- Options: single (default) | tiered -->
+<!-- single: all files updated in one agent dispatch — minimises token/message overhead -->
+<!-- tiered: 3 concurrent agents grouped by file dependency — faster for large installations -->
+
 ## Protected Files
 
 <!-- Files that are NEVER committed to git and NEVER read/written by the maintain agent -->
@@ -96,6 +104,9 @@ Run `/pmm-settings` at any time to change these.
 <!-- bootstrap_reminder options: on (default) | off -->
 <!-- on: PMM will prompt to wire @memory/BOOTSTRAP.md into CLAUDE.md if not already done -->
 <!-- off: suppress the reminder permanently (memory auto-load relies on manual skill triggers) -->
+- bootstrap_wired: false
+<!-- bootstrap_wired options: false (default) | true -->
+<!-- true: @memory/BOOTSTRAP.md is confirmed wired in CLAUDE.md — Bootstrap Check skips file reads -->
 ```
 
 ---

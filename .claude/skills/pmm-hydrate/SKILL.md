@@ -61,20 +61,29 @@ If argument is a specific filename:
 
 If `all` and no template-only files found (without force): report "No template-only files found. Use `force` to re-hydrate populated files."
 
-### Step 4 — Hydrate each target file
+### Step 4 — Hydrate target files
 
-For each target file, dispatch a `general-purpose` agent using the Phase 5 (Hydrate) prompt from `.claude/skills/poor-man-memory/SKILL.md`.
+**If 2 or more target files:** dispatch a **single** `general-purpose` agent using the Phase 5 **batch hydration** prompt from `.claude/skills/poor-man-memory/SKILL.md`.
 
-Substitute into the Phase 5 prompt:
+Substitute into the batch prompt:
+- `<comma-separated list of filenames>` → all target filenames (e.g. `taxonomies.md, voices.md`)
+- `<skill-base>` → the actual path to `.claude/skills/poor-man-memory`
+
+**If exactly 1 target file:** dispatch a `general-purpose` agent using the Phase 5 **single-file hydration** prompt from `.claude/skills/poor-man-memory/SKILL.md`.
+
+Substitute into the single-file prompt:
 - `<new-file-name>` → the target filename (e.g. `taxonomies.md`)
 - `<purpose>` → the file's purpose (look it up from BOOTSTRAP.md or the file's own header comment)
 - `<skill-base>` → the actual path to `.claude/skills/poor-man-memory`
 
 The agent uses `[system:hydrate]` attribution for all entries it writes.
 
-After each agent returns, commit:
+After the agent returns, commit:
 ```bash
+# Single file:
 git add memory/<filename> && git commit -m "memory: hydrate <filename> from existing context"
+# Multiple files:
+git add memory/ && git commit -m "memory: hydrate <file1>, <file2>, ... from existing context"
 ```
 
 ### Step 5 — Report

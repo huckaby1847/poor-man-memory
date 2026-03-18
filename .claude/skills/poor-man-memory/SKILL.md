@@ -203,9 +203,13 @@ Replace `<skill-base>` with the actual skill base directory path.
 
 **When:** New information emerges that should persist (see trigger table below).
 
-**Pre-check — Hydrate template-only files:** Before dispatching the maintain agents, check all active files for template-only status in a single concurrent read-only agent (dispatch one agent that reads all active files and returns a list of which are template-only — faster than sequential per-file checks). Strip blank lines, headings, comments, table headers — if 0 content lines remain, it's template-only. If any active files are template-only AND at least 3 other files are populated, dispatch Phase 5 (Hydrate) for each template-only file first. Commit hydrated files separately before the maintain cycle.
+**Pre-check — Hydrate template-only files:** Before dispatching the maintain agents, check active files for template-only status directly in main context using the Read tool. For each active file, read it and strip blank lines, `#` headings, HTML comments, and table header/separator rows — if 0 content lines remain, it's template-only. If any active files are template-only AND at least 3 other files are populated, dispatch Phase 5 batch hydration (single agent for all template-only files). Commit hydrated files separately before the maintain cycle.
 
-**Dispatch:** Use tier-based concurrent agents for efficiency. Files are grouped into three tiers by dependency:
+**Dispatch:** Read `config.md` for the `Strategy` setting under `## Maintain Strategy` (default: `single`).
+
+**If `Strategy: single`** — dispatch one agent for all active files. This is the default and minimises agent overhead.
+
+**If `Strategy: tiered`** — use tier-based concurrent agents for efficiency. Files are grouped into three tiers by dependency:
 
 - **Tier 1 — Event files** (stateless, no cross-file deps): `last.md`, `timeline.md`, `summaries.md`, `progress.md`
 - **Tier 2 — Content files** (semantic, loosely coupled): `decisions.md`, `lessons.md`, `preferences.md`, `memory.md`, `processes.md`, `voices.md`, `assets.md`, `standinginstructions.md`
@@ -213,7 +217,7 @@ Replace `<skill-base>` with the actual skill base directory path.
 
 Launch the Tier 1 and Tier 2 agents **simultaneously** by dispatching both as separate Agent tool calls in the **same message** (not `run_in_background` — background agents do not inherit Edit/Write tool permissions). After both return, launch the Tier 3 agent — it reads the file state already written by Tier 1+2 agents before updating relational structure.
 
-Each agent uses the model from `config.md` (default: `haiku`). Use the following prompt for each tier, substituting `<tier-file-list>`:
+Each agent uses the model from `config.md` (default: `haiku`). Use the following prompt for each dispatch (single mode: `<tier-file-list>` = all active files; tiered mode: substitute each tier's file list):
 
 > Update the poor-man-memory files. This is a WRITE task — edit files only. Do NOT run any git commands.
 >
@@ -341,7 +345,11 @@ Replace `<user's question>` with the actual query.
 
 **This is not a greenfield install.** The existing memory files contain history, decisions, preferences, and patterns that should inform the new file's initial content.
 
-**Dispatch:** Launch a `general-purpose` agent with this prompt:
+**Two dispatch modes — choose based on number of target files:**
+
+#### Single-file hydration (1 target file)
+
+Launch a `general-purpose` agent with this prompt:
 
 > Hydrate a newly added memory file from existing memory. This is a WRITE task — edit the new file only. Do NOT run any git commands.
 >
@@ -370,10 +378,43 @@ Replace `<user's question>` with the actual query.
 
 Replace `<new-file-name>`, `<purpose>`, `<skill-base>`, and `<relevant-syntax>` with actual values.
 
+#### Batch hydration (2+ target files — preferred for `/pmm-save` pre-check and `/pmm-hydrate all`)
+
+Launch a **single** `general-purpose` agent with this prompt:
+
+> Hydrate multiple memory files from existing memory. This is a WRITE task — edit the target files only. Do NOT run any git commands.
+>
+> **Target files:** `<comma-separated list of filenames>`
+> **Reference:** `<skill-base>/references/` (graph-syntax.md, vector-syntax.md, voice-syntax.md for format rules)
+>
+> **Instructions:**
+> 1. Read ALL existing populated memory files to build context:
+>    - timeline.md, summaries.md — what happened over time
+>    - decisions.md — what was decided and why
+>    - lessons.md — what went wrong and what to do instead
+>    - preferences.md — how the user works
+>    - processes.md — established workflows
+>    - standinginstructions.md — persistent rules
+>    - memory.md — long-term facts
+>    - assets.md — people, tools, systems
+>    - graph.md, vectors.md — relationships and similarities
+>    - last.md, progress.md — recent context
+> 2. For EACH target file, infer appropriate content based on what the existing files reveal.
+>    - Do not copy content — synthesise. Each file has one job.
+>    - Use the format defined in the relevant reference doc for that file type.
+>    - Only add entries you can justify from the existing memory. Do not hallucinate.
+>    - Use `[system:hydrate]` as the attribution tag for all hydrated entries.
+> 3. Write the inferred content to each target file.
+> 4. Return a brief summary per file: what was inferred and from which source files.
+
+Replace `<comma-separated list of filenames>` and `<skill-base>` with actual values. Use batch mode whenever 2 or more files need hydrating — it reads context once and writes all targets, instead of re-reading all files once per target.
+
 **After agent returns:** Main context commits:
 ```bash
 git add memory/<new-file> && git commit -m "memory: hydrate <new-file> from existing memory"
 ```
+
+For batch: `git add memory/ && git commit -m "memory: hydrate <file1>, <file2>, ... from existing memory"`
 
 **When to trigger:**
 - After a PMM version update that introduces new memory files
@@ -490,8 +531,10 @@ A reusable check run after `init memory`, `/pmm-save`, `/pmm-hydrate`, and `/pmm
 
 **Run this check whenever instructed by a phase or skill:**
 
-1. Read `memory/config.md`. If `bootstrap_reminder: off` appears in the file → **skip entirely**.
-2. Read `CLAUDE.md`. If `@memory/BOOTSTRAP.md` appears anywhere in it → **skip entirely** (already wired).
+1. Read `memory/config.md`.
+   - If `bootstrap_wired: true` appears → **skip entirely** (already wired and verified — no further reads needed).
+   - If `bootstrap_reminder: off` appears → **skip entirely**.
+2. Read `CLAUDE.md`. If `@memory/BOOTSTRAP.md` appears anywhere in it → write `- bootstrap_wired: true` to the `## Protected Files` section of `memory/config.md` (replacing the existing `- bootstrap_wired: false` line), then **skip** (caches result so future checks skip this file read).
 3. Otherwise, present this prompt using `AskUserQuestion`:
 
    > **PMM memory is not wired for auto-load.**
@@ -513,7 +556,8 @@ A reusable check run after `init memory`, `/pmm-save`, `/pmm-hydrate`, and `/pmm
 
      @memory/BOOTSTRAP.md
      ```
-   - `git add CLAUDE.md && git commit -m "pmm: wire @memory/BOOTSTRAP.md into CLAUDE.md for auto-load"`
+   - In `memory/config.md`, replace `- bootstrap_wired: false` with `- bootstrap_wired: true` in the `## Protected Files` section
+   - `git add CLAUDE.md memory/config.md && git commit -m "pmm: wire @memory/BOOTSTRAP.md into CLAUDE.md for auto-load"`
    - Confirm: "Done — memory files will load automatically at the start of every session."
 
 5. If user selects **Never remind me**:

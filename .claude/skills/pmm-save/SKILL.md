@@ -9,10 +9,10 @@ Lightweight trigger for Phase 3 (Maintain) of Poor Man's Memory. Captures curren
 
 ## Behaviour
 
-1. Read `memory/config.md` to get the maintain agent model (default: `haiku`) and active files list
-2. **Template-only check:** Dispatch a single read-only agent to check all active files concurrently for template-only status (strip blank lines, headings, comments, table headers — if 0 content lines remain, it's template-only). If ANY active files are template-only AND at least 3 other files are populated, dispatch Phase 5 (Hydrate) for each template-only file BEFORE the maintain cycle. Use the Phase 5 prompt from `.claude/skills/poor-man-memory/SKILL.md`. Commit hydrated files separately: `git add memory/ && git commit -m "memory: hydrate <file> from existing context"`
+1. Read `memory/config.md` to get the maintain agent model (default: `haiku`), active files list, and maintain strategy (default: `single`)
+2. **Template-only check:** Read each active file directly in main context using the Read tool. Strip blank lines, `#` headings, HTML comments, and table header/separator rows — if 0 content lines remain, it's template-only. If ANY active files are template-only AND at least 3 other files are populated, dispatch the Phase 5 **batch hydration** agent (single agent for all template-only files at once) BEFORE the maintain cycle. Use the batch hydration prompt from `.claude/skills/poor-man-memory/SKILL.md` (Phase 5 — Batch hydration section). Commit hydrated files: `git add memory/ && git commit -m "memory: hydrate <files> from existing context"`
 3. Build a "What changed" summary by reviewing the current conversation since the last save — identify decisions, facts, preferences, milestones, lessons, or any other notable events
-4. Dispatch the maintain agents using the Phase 3 tier-based dispatch from the main `poor-man-memory` skill (`.claude/skills/poor-man-memory/SKILL.md`, Phase 3 — Maintain section). Tier 1 and Tier 2 run in parallel; Tier 3 runs after both complete.
+4. Dispatch the maintain agent(s) using Phase 3 from `.claude/skills/poor-man-memory/SKILL.md`. **If `Strategy: single`** (default): dispatch one agent for all active files. **If `Strategy: tiered`**: dispatch Tier 1 and Tier 2 agents simultaneously, then Tier 3 after both complete.
 5. After the agent returns, commit. Read `memory/config.md` for the `Auto-push` setting:
    ```bash
    # Always:
