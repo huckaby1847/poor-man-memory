@@ -299,6 +299,8 @@ Replace `<user's question>` with the actual query.
 
 **After agent returns:** Relay the findings to the user. If nothing was found, say so honestly.
 
+**Tip:** Users can also run `/pmm-query <question>` for explicit recall with filtering support (attribution, date range, file scope).
+
 ### Phase 5 — Hydrate (new files in existing installations)
 
 **When:** A new memory file is added to the skill (via PMM update) but the user already has an existing `memory/` directory with populated files. The new file would be created from its empty template, missing all the context that existing files already hold.
@@ -415,6 +417,18 @@ Explicitly triggers a memory save (Phase 3 — Maintain). Captures current sessi
 - Compatible with `/loop` for recurring saves: `/loop 5m /pmm-save`
 
 This command is implemented as a separate skill at `.claude/skills/pmm-save/SKILL.md`.
+
+### /pmm-query
+
+Search memory files for past decisions, preferences, events, relationships, or any recorded context.
+Supports free-text questions plus optional filters (attribution, date range, file scope).
+
+- `/pmm-query what did we decide about visualization` — free-text search
+- `/pmm-query decisions by user:raffi` — filter by attribution
+- `/pmm-query timeline since 2026-03-17` — filter by date
+- `/pmm-query in lessons` — scope to a specific file
+
+This command is implemented as a separate skill at `.claude/skills/pmm-query/SKILL.md`.
 
 ### /pmm-update
 
