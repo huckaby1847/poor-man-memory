@@ -34,7 +34,8 @@ The project being worked on IS the poor-man-memory skill itself. The user is act
 
 ## Token Economics
 
-- Session-start: ~10-18k tokens
+- Session-start: ~10-18k tokens (lazy mode with bootstrap_wired: true, ~33k save vs eager)
 - Maintain light: ~10k tokens
 - Maintain major: ~21k tokens
+- Overall cost reduction v1.4.0-v1.5.0: 73-90% vs pre-v1.4.0 (via readonly_model haiku, lazy session-start, batch hydration, single maintain strategy)
 - Per-session cost: ~$0.06-0.12 on Opus, ~5x cheaper on Sonnet
