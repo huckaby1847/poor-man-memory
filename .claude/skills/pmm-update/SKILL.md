@@ -111,7 +111,7 @@ If user approves, dispatch a `general-purpose` agent:
 > [list each D file path]
 >
 > **Merge files** (additive only):
-> - `.claude/settings.json`: Add missing permission entries from upstream. Do NOT remove existing entries.
+> - `.claude/settings.json`: Read both, merge `permissions.allow` entries and `hooks` object additively. Add missing entries/events, do NOT remove existing ones.
 >
 > **NEVER touch:**
 > - Any file in `memory/`
@@ -131,6 +131,7 @@ If user approves, dispatch a `general-purpose` agent:
 2. **Reinstall the pre-commit hook** (in case `pmm/hooks/pre-commit` was updated):
    ```bash
    cp pmm/hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+   chmod +x pmm/hooks/pre-compact.sh pmm/hooks/post-compact-cleanup.sh 2>/dev/null || true
    ```
 
 3. **Commit**:

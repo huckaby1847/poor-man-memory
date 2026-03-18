@@ -134,7 +134,7 @@ Track changes — note when a taxonomy evolves so historical references remain i
 
 ### Configuration Options
 *Purpose: allowed values and defaults for config.md settings*
-*Last updated: 2026-03-18*
+*Last updated: 2026-03-19*
 
 | Setting | Allowed Values | Default | Notes |
 |---|---|---|---|
@@ -147,6 +147,9 @@ Track changes — note when a taxonomy evolves so historical references remain i
 | Active Files | Multi-select from all 15 files | All active | config.md and BOOTSTRAP.md always active |
 | Maintain Strategy | single, tiered | single | v1.4.0: single is default (1 agent, minimal overhead); tiered is opt-in (3-agent parallel, faster but higher cost). Changed via /pmm-settings Q8. |
 | Bootstrap Wired | false, true | false | v1.4.0: false = new install, Bootstrap Check reads CLAUDE.md; true = wiring confirmed, check skips file reads. Auto-set to true after "Fix it now" or manual wiring. |
+| Readonly Model | haiku, sonnet, opus, inherit | haiku | v1.5.0: forces haiku for read-only agents (Phase 2, Phase 4, pmm-query, pmm-dump, pmm-status, pmm-viz) — ~95% cost reduction vs Opus. Changed via /pmm-settings Q11. |
+| Session Start | lazy, eager | lazy | v1.5.0: lazy skips Phase 2 when bootstrap_wired=true (memory auto-loads from @memory/BOOTSTRAP.md); eager always dispatches. Changed via /pmm-settings Q12. |
+| Recall Beyond Window | prompt, auto | prompt | v1.6.0: controls whether to search git history for trimmed/old entries. prompt (default) = ask user with 3-option question; auto = silently search (persists from "don't ask me again"). Changed via /pmm-settings Q13. |
 
 ### GitHub Identity Scheme
 *Purpose: role-based commit authors for this project*

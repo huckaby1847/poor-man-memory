@@ -113,6 +113,14 @@ Run `/pmm-settings` at any time to change these.
 <!-- prompt: ask before dispatching an agent to search git history -->
 <!-- auto: silently search git history when in-context files don't have the answer -->
 
+## Pre-Compact Hook
+
+<!-- Should PMM block /compact until memory is saved? -->
+- pre_compact: on
+<!-- Options: on (default) | off -->
+<!-- on: PreCompact hook blocks compact, signals Claude to run /pmm-save first -->
+<!-- off: compact proceeds without enforced save (soft instruction only) -->
+
 ## Protected Files
 
 <!-- Files that are NEVER committed to git and NEVER read/written by the maintain agent -->

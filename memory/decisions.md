@@ -148,6 +148,10 @@ Ratified by: user
 Context: When `session_start=lazy` and `bootstrap_wired=true`, memory files are already loaded in-context via @memory/BOOTSTRAP.md imports. Phase 4 Recall and pmm-query should exploit this: answer queries directly from in-memory files without dispatching an agent. Only fall back to agent for git history when answer not in context, and gate that behind user permission `recall_beyond_window` (prompt or auto mode). Reduces latency and token cost for in-window recalls by 50%+.
 Ratified by: user
 
+**2026-03-19 — v1.6.0 context-first recall pattern (Phase 4 & pmm-query)** [user:raffi]
+Context: When `session_start=lazy` and `bootstrap_wired=true`, memory files are already loaded in-context via @memory/BOOTSTRAP.md imports. Phase 4 Recall and /pmm-query should exploit this by answering queries directly from in-memory files without dispatching an agent. Only fall back to agent for git history when answer not in context, gated behind user permission `recall_beyond_window` (prompt or auto mode). Reduces latency and token cost for in-window recalls by 50%+. Eager mode fallback unchanged.
+Ratified by: user
+
 **2026-03-18 — Tier-based concurrent sub-agents for Phase 3 Maintain** [user:raffi]
 Context: Single maintain agent handling all 15 files sequentially is slow. Replacing with a three-tier concurrent dispatch: Tier 1 (event files: last.md, timeline.md, summaries.md, progress.md) and Tier 2 (content files: decisions.md, lessons.md, preferences.md, memory.md, processes.md, voices.md, assets.md, standinginstructions.md) run in parallel. Tier 3 (relational files: graph.md, vectors.md, taxonomies.md) runs after both complete, reading updated file state from Tier 1+2. Template-only pre-check also moved to a single concurrent read-only agent rather than sequential per-file checks.
 Ratified by: user

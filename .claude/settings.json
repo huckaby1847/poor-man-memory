@@ -8,7 +8,34 @@
       "Bash(git log *)",
       "Bash(git show *)",
       "Bash(git clone --depth 1 *)",
-      "Bash(rm -rf /tmp/pmm-upstream*)"
+      "Bash(rm -rf /tmp/pmm-upstream*)",
+      "Bash(touch /tmp/pmm-compact-ready*)"
+    ]
+  },
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash pmm/hooks/pre-compact.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash pmm/hooks/post-compact-cleanup.sh",
+            "timeout": 5
+          }
+        ]
+      }
     ]
   }
 }

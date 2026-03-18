@@ -1,6 +1,6 @@
 ---
 name: pmm-settings
-description: "Change Poor Man's Memory configuration. Re-presents preference prompts for save cadence, commit behaviour, push behaviour, sliding window size, verbosity, repository visibility, maintain agent model, maintain strategy, readonly agent model, session start mode, recall beyond window, secrets_git, and active files. Use when the user runs /pmm-settings or asks to change memory system settings."
+description: "Change Poor Man's Memory configuration. Re-presents preference prompts for save cadence, commit behaviour, push behaviour, sliding window size, verbosity, repository visibility, maintain agent model, maintain strategy, readonly agent model, session start mode, recall beyond window, secrets_git, pre-compact hook, and active files. Use when the user runs /pmm-settings or asks to change memory system settings."
 ---
 
 # PMM Settings
@@ -30,6 +30,7 @@ Read `memory/config.md` and display the current settings to the user as a summar
 > - Session start: [current]
 > - Recall beyond window: [current]
 > - Secrets in git: [current]
+> - Pre-compact hook: [current]
 > - Active files: [count] of 15 active
 > - Deactivated: [list, or "none"]
 
@@ -107,6 +108,10 @@ Use `AskUserQuestion` to present the same questions from Phase 1 of the main ski
 - Auto — silently search git history when needed, without prompting (costs 1 agent dispatch per miss)
 
 *In lazy mode, all 16 memory files are already in context — git history is only needed for entries that have been trimmed from sliding-window files (timeline.md, summaries.md). Most queries will be answered from context without any agent dispatch.*
+
+**Q14: Pre-compact hook** — Should PMM block `/compact` until memory has been saved?
+- On (default) — PreCompact hook blocks compact, Claude runs /pmm-save first, then compact proceeds
+- Off — compact proceeds without enforced save (relies on soft instruction in BOOTSTRAP.md)
 
 ### Step 3 — Write updated config
 

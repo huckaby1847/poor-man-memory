@@ -201,6 +201,22 @@ Use typed relationships from references/graph-syntax.md.
 [[pmm-settings Q12]] → controls → [[session_start config]]
 [[PR #29]] → ships → [[v1.5.0]]
 
+## v1.6.0 Context-First Recall
+[[v1.6.0]] → ships-with → [[Context-First Recall Pattern]]
+[[v1.6.0]] → ships-with → [[Recall Beyond Window Config]]
+[[v1.6.0]] → refines → [[Phase 4 Recall]]
+[[v1.6.0]] → refines → [[/pmm-query]]
+[[Context-First Recall Pattern]] → executes-in → [[Main Context]] <!-- when session_start=lazy AND bootstrap_wired=true -->
+[[Context-First Recall Pattern]] → answers-from → [[In-Memory Files]] <!-- no agent dispatch for in-window queries -->
+[[Context-First Recall Pattern]] → fallback-to → [[Git-History Agent]] <!-- gated behind recall_beyond_window -->
+[[recall_beyond_window config]] → controls → [[Git History Fallback]]
+[[recall_beyond_window config]] → stored-in → [[config.md]]
+[[recall_beyond_window: prompt]] → default-mode → [[Ask User on Out-of-Window Query]] <!-- three-option prompt: Yes/Yes-auto/No -->
+[[recall_beyond_window: auto]] → mode → [[Silent Git History Search]] <!-- persists from user 'don't ask again' -->
+[[Phase 4 Recall]] → context-first-when → [[Lazy Session Start AND Bootstrap Wired]]
+[[/pmm-query]] → context-first-when → [[Lazy Session Start AND Bootstrap Wired]]
+[[PR #30]] → ships → [[v1.6.0]]
+
 ## v1.4.0 Token/Message Overhead Reduction
 [[v1.4.0]] → ships-with → [[Bootstrap Check Cache]]
 [[v1.4.0]] → ships-with → [[Pre-check Agent Removal]]
