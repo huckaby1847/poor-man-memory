@@ -26,6 +26,7 @@ Use formats from references/vector-syntax.md.
 [[recall_beyond_window config]] ↔ [[Lazy Session Start]] | score: 0.68 | basis: both guard against out-of-context queries — lazy session start defines memory window via bootstrap, recall_beyond_window gates fallback to git history when window limit exceeded
 [[In-Memory Query]] ↔ [[Git-History Fallback]] | score: 0.72 | basis: two-tier recall strategy in v1.6.0 — answer from in-memory files first (fast, no agent), fall back to git search only with permission and outside window
 [[Main Context Query Execution]] ↔ [[Agent Dispatch Elimination]] | score: 0.77 | basis: v1.6.0 context-first moves recall from agent to main context when conditions met, eliminates dispatch overhead for in-window recalls by 50%+
+[[Tier-Aware Pointer Format]] ↔ [[Context-First Recall]] | score: 0.82 | basis: both exploit tier distinction — tier-aware pointers distinguish in-context (Tier 1) from on-disk (Tier 2) to avoid unnecessary Read calls, context-first recall answers in-context queries without agent dispatch
 
 ## Clusters
 

@@ -246,3 +246,15 @@ Use typed relationships from references/graph-syntax.md.
 [[session-exit trigger]] → added-to → [[templates.md]]
 [[session-exit trigger]] → part-of → [[Explicit Save Triggers]]
 [[PR #32]] → ships → [[v1.7.1]]
+
+## v1.8.0 Tier-Aware Pointer Format
+[[v1.8.0]] → ships-with → [[Tier-Aware Auto-Memory Pointers]]
+[[Tier-Aware Auto-Memory Pointers]] → replaces → [[Flat Pointer Format]] <!-- "See PMM memory/<file>.md" was ambiguous -->
+[[Tier-Aware Auto-Memory Pointers]] → updates → [[BOOTSTRAP.md]] <!-- live file -->
+[[Tier-Aware Auto-Memory Pointers]] → updates → [[references/templates.md]] <!-- template for new installs -->
+[[Tier-Aware Auto-Memory Pointers]] → updates → [[SKILL.md Rules Section]]
+[[Tier 1 Pointer Format]] → signifies → [[In-Context Content]] <!-- "Already in context via PMM — see <file>.md (Tier 1)" -->
+[[Tier 2 Pointer Format]] → signifies → [[Disk Content Requiring Read]] <!-- "See PMM memory/<file>.md (Tier 2 — use Read tool)" -->
+[[Tier-Aware Format]] → eliminates → [[Unnecessary Pointer-Triggered Reads]]
+[[PR #33]] → ships → [[v1.8.0]]
+[[PR #33]] → fixes → [[Pointer Format Ambiguity]]

@@ -156,6 +156,14 @@ Ratified by: user
 Context: Single maintain agent handling all 15 files sequentially is slow. Replacing with a three-tier concurrent dispatch: Tier 1 (event files: last.md, timeline.md, summaries.md, progress.md) and Tier 2 (content files: decisions.md, lessons.md, preferences.md, memory.md, processes.md, voices.md, assets.md, standinginstructions.md) run in parallel. Tier 3 (relational files: graph.md, vectors.md, taxonomies.md) runs after both complete, reading updated file state from Tier 1+2. Template-only pre-check also moved to a single concurrent read-only agent rather than sequential per-file checks.
 Ratified by: user
 
+**2026-03-19 — Tier-aware auto-memory pointer format** [user:raffi]
+Context: The flat pointer format `"See PMM memory/<file>.md"` in Memory Priority → Storage rule (BOOTSTRAP.md) was ambiguous about whether a Read tool call was needed. Replaced with two-level tier-aware format that explicitly signals whether content is in-context or on-disk: Tier 1 (already loaded) → `"Already in context via PMM — see <file>.md (Tier 1)"`; Tier 2 (needs Read) → `"See PMM memory/<file>.md (Tier 2 — use Read tool)"`. Eliminates pointer-triggered reads for in-context content, reduces cognitive load on Claude agents. Files updated: memory/BOOTSTRAP.md (live), .claude/skills/poor-man-memory/references/templates.md (template for new installs), .claude/skills/poor-man-memory/SKILL.md (Rules section).
+Ratified by: user
+
+**2026-03-19 — v1.8.0 fix shipped via PR #33** [user:raffi]
+Context: PR #33 (fix/v1.8.0-tier-aware-memory-pointers) created from local main holding 3 unpushed commits (v1.8.0 feat, prior memory save, tier-aware fix). Local main reset to origin/main. Branch pushed by leith-dev. PR created, reviewed, and merged via proper workflow: raffi-ismail approved with comment "Good fix — flat pointer format was indeed ambiguous. Tier 1 content is already in context, pointing to a Read call is unnecessary noise. Two-level format makes intent explicit. Three files touched consistently, BOOTSTRAP template updated for new installs. LGTM." Merged (squash). Branch deleted. Demonstrates correct branch → PR → merge workflow, never pushing directly to main.
+Ratified by: user
+
 **2026-03-19 — PreCompact and SessionEnd hooks are non-blocking; compact/exit saves rely on soft instruction only**
 Context: Investigated v1.7.0 hook-based block-signal-retry design for compact and session exit. Discovered Claude Code's PreCompact hook cannot block compaction — exit code 2 marks the hook as "failed" but compact proceeds regardless. SessionEnd hook similarly cannot block session exit. No hook mechanism in Claude Code can gate these events. Compact/exit saves rely entirely on soft instruction from BOOTSTRAP.md being honored by Claude, not on enforced blocking. False assumption corrected across documentation.
 Ratified by: user

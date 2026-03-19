@@ -87,4 +87,8 @@ Append-only — entries go in chronological order.
 **2026-03-19** — New explicit save trigger added: "Before ending the session (user says goodbye, closes conversation, or signals they are done)". Integrated into BOOTSTRAP.md save triggers, SKILL.md When-to-Update guidance, and templates.md BOOTSTRAP template. [system:process]
 **2026-03-19** — v1.7.1 released at https://github.com/NominexHQ/poor-man-memory/releases/tag/v1.7.1 with title "v1.7.1 — correct hook blocking claims, add session-exit save trigger". PR #32 merged by raffi-ismail (leith-dev author). [system:process]
 
+**2026-03-19** — v1.8.0 feat: Tier-aware auto-memory pointer format implemented; three files updated (BOOTSTRAP.md live, templates.md, SKILL.md Rules); format distinguishes Tier 1 (in-context) from Tier 2 (disk/Read) to eliminate unnecessary pointer-triggered reads. [user:raffi]
+
+**2026-03-19** — PR #33 (fix/v1.8.0-tier-aware-memory-pointers) created from local main, local main reset to origin/main, branch pushed by leith-dev, PR reviewed and approved by raffi-ismail ("Good fix — format ambiguity resolved, three files consistent, BOOTSTRAP template updated, LGTM"), merged (squash), branch deleted; demonstrates correct branch → PR → merge workflow. [system:process]
+
 

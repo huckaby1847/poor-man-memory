@@ -99,6 +99,12 @@ v1.4.0 released on GitHub with token/message overhead reduction. Repository is l
 - New explicit save trigger: "Before ending the session" (user says goodbye/closes conversation) added to BOOTSTRAP.md, SKILL.md, and templates (v1.7.1)
 - v1.7.1 released to GitHub with documentation corrections and new session-exit trigger, PR #32 merged (2026-03-19)
 
+## Completed (continued)
+
+- Tier-aware auto-memory pointer format implemented (v1.8.0) — BOOTSTRAP.md, templates.md, SKILL.md updated with explicit Tier 1/Tier 2 distinction
+- PR #33 created, reviewed, and merged via proper branch → PR → merge workflow
+- v1.8.0 fix shipped via PR #33
+
 ## Next
 
 - Add `gh auth switch --user leith-dev` as mandatory step before `gh pr create` in standinginstructions.md (account mix-up 4th repeat)
@@ -107,7 +113,7 @@ v1.4.0 released on GitHub with token/message overhead reduction. Repository is l
 - Add pre-PR checklist for GitHub account identity verification (prevent repeat)
 - Evaluate Phase 4 (Recall) vs /pmm-query interaction and user preferences
 - Further dog-fooding across real projects with /pmm-query
-- Community feedback on v1.5.0 release
+- Community feedback on v1.6.0 release
 - Extended use on nominex-pmm repository itself for self-referential memory iteration
 - Monitor readonly_model performance with real sessions across projects
 - Consider expanded model options (e.g., claude-3.5-sonnet for higher-fidelity recalls)

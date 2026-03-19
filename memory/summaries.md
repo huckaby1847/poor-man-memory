@@ -10,6 +10,9 @@ Sliding window — keep only the 10 most recent summaries. Older summaries live 
 
 ---
 
+### 2026-03-19 — v1.8.0 Tier-Aware Pointer Format shipped
+Implemented v1.8.0 fix for ambiguous auto-memory pointer format in BOOTSTRAP.md. Replaced flat `"See PMM memory/<file>.md"` with explicit tier-aware format: Tier 1 content (in-context, no Read needed) → `"Already in context via PMM — see <file>.md (Tier 1)"`; Tier 2 content (on-disk) → `"See PMM memory/<file>.md (Tier 2 — use Read tool)"`. Three files updated consistently: BOOTSTRAP.md (live), references/templates.md (new install template), SKILL.md (Rules section). Eliminates unnecessary pointer-triggered Read calls for in-context content. PR #33 created from local main (which held 3 unpushed commits), local main reset to origin/main, branch pushed and PR reviewed/merged via correct workflow. Demonstrates proper branch → PR → merge discipline.
+
 ### 2026-03-19 — v1.7.1 Hook blocking investigation and session-exit trigger
 Investigated v1.7.0's hook-based CompactBlock design and discovered PreCompact and SessionEnd hooks in Claude Code cannot block operations — exit code 2 marks hooks as "failed" but compaction/session exit proceeds regardless. The block-signal-retry design relied on a false assumption. Corrected all documentation claiming hooks can block: removed assertions from SKILL.md When-to-Update, pmm-settings Q14, memory/config.md comments, and templates.md config template. Removed vestigial marker code (touch /tmp/pmm-compact-ready*). Added "Before ending the session" as an explicit save trigger (joining /pmm-save, /pmm-query, /pmm-hydrate, config change, and new-entity triggers). Saves now explicitly remind users to capture state before closing conversations. v1.7.1 released with title "correct hook blocking claims, add session-exit save trigger". PR #32 merged.
 
