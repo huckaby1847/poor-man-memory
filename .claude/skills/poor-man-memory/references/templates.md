@@ -94,7 +94,7 @@ Run `/pmm-settings` at any time to change these.
 <!-- Whether to dispatch a Phase 2 agent at session start -->
 - Mode: lazy
 <!-- Options: lazy (default) | eager -->
-<!-- lazy: skip Phase 2 agent — memory files already in context via @memory/BOOTSTRAP.md @-imports. Requires bootstrap_wired: true. Falls through to eager if bootstrap_wired is false. -->
+<!-- lazy: skip Phase 2 agent — Tier 1 files (12 files) in context via direct @-imports in CLAUDE.md; Tier 2 files (graph, vectors, taxonomies, assets) loaded on demand by haiku agent per BOOTSTRAP.md. Requires bootstrap_wired: true. Falls through to eager if bootstrap_wired is false. -->
 <!-- eager: always dispatch Phase 2 agent to read and synthesise all memory files -->
 
 ## Maintain Strategy
@@ -212,18 +212,30 @@ Current installation: this project. Upstream: https://github.com/NominexHQ/poor-
 ## Memory System
 
 This project uses a structured memory system in the `memory/` folder.
-All memory operations run via agents (subprocesses) — never in the main context window.
 
-### Tier 1 — Always Loaded
-@memory/config.md
-@memory/standinginstructions.md
-@memory/progress.md
-@memory/last.md
-@memory/preferences.md
-@memory/decisions.md
-@memory/lessons.md
-@memory/processes.md
-@memory/voices.md
+**Tier 1 files** (config, standinginstructions, last, progress, decisions, lessons,
+preferences, memory, summaries, voices, processes, timeline) are loaded into context via
+direct @-imports in CLAUDE.md — always available, no agent needed.
+
+**Tier 2 files** (graph, vectors, taxonomies, assets) are on disk. Before responding to a
+request, check for **gaps**: places where Tier 1 context + the current request point to
+information that Tier 1 doesn't fully cover. Evaluate:
+
+1. **The request itself** — does it ask about something Tier 2 tracks?
+2. **Tier 1 signals** — do Tier 1 files reference or imply data that lives in Tier 2?
+   (e.g. decisions.md references an entity relationship, lessons.md hints at a pattern
+   cluster in vectors.md)
+3. **Gaps** — can you fully answer the request from Tier 1 alone, or are there holes
+   that Tier 2 data would fill?
+
+If gaps exist that Tier 2 can fill, dispatch a haiku agent to Read the relevant file(s)
+and return a summary. Only load what's needed — not all 4.
+
+**Examples:**
+- Request asks about entity relationships hinted at in decisions.md → graph.md
+- Request asks about assets, URLs, or artifacts not in any Tier 1 file → assets.md
+- Lesson in lessons.md references a pattern cluster → vectors.md
+- /pmm-query with `deep` modifier → all Tier 2 files
 
 ### Tier 2 — Available On Demand
 <!-- These files are active but NOT loaded at session start.

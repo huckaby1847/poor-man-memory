@@ -104,16 +104,19 @@ v1.4.0 released on GitHub with token/message overhead reduction. Repository is l
 - Tier-aware auto-memory pointer format implemented (v1.8.0) — BOOTSTRAP.md, templates.md, SKILL.md updated with explicit Tier 1/Tier 2 distinction
 - PR #33 created, reviewed, and merged via proper branch → PR → merge workflow
 - v1.8.0 fix shipped via PR #33
+- Tiered memory loading fix implemented (v1.9.0) — root cause: @-imports don't recurse; moved Tier 1 files to CLAUDE.md direct @-imports, kept Tier 2 on-demand via haiku agent
+- CLAUDE.md, BOOTSTRAP.md, settings.json, templates.md, SKILL.md, pmm/version.json updated for v1.9.0
+- v1.9.0 bump to version.json (category: merge)
 
 ## Next
 
-- Add `gh auth switch --user leith-dev` as mandatory step before `gh pr create` in standinginstructions.md (account mix-up 4th repeat)
 - Fix SKILL.md documentation to reference corrected Bash permission rule syntax (remove old broken example)
 - Implement notification framework for targeted /pmm-update announcements (for critical non-auto-apply fixes)
 - Add pre-PR checklist for GitHub account identity verification (prevent repeat)
 - Evaluate Phase 4 (Recall) vs /pmm-query interaction and user preferences
 - Further dog-fooding across real projects with /pmm-query
-- Community feedback on v1.6.0 release
+- Community feedback on v1.9.0 release
 - Extended use on nominex-pmm repository itself for self-referential memory iteration
 - Monitor readonly_model performance with real sessions across projects
 - Consider expanded model options (e.g., claude-3.5-sonnet for higher-fidelity recalls)
+- Add `gh auth switch --user leith-dev` as mandatory step before `gh pr create` in standinginstructions.md (account mix-up 4th repeat)

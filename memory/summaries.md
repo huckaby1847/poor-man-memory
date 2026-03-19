@@ -10,6 +10,9 @@ Sliding window — keep only the 10 most recent summaries. Older summaries live 
 
 ---
 
+### 2026-03-19 — v1.9.0 Tiered Memory Loading Fix shipped
+Diagnosed and fixed memory auto-load inconsistency in v1.9.0. Root cause: @-imports don't recurse in Claude Code, so BOOTSTRAP.md's nested imports were never resolved. Solution: (1) Moved all 12 Tier 1 files as direct @-imports in CLAUDE.md (always in-context, no agent needed); (2) Kept 4 Tier 2 files (graph, vectors, taxonomies, assets) as on-demand agent fetches (lower priority). Updated CLAUDE.md, BOOTSTRAP.md, settings.json, templates.md, SKILL.md, and bumped version to v1.9.0. This is a breaking change for existing installs — CLAUDE.md moves to merge category, requiring manual update. Lesson captured: @-imports at system-prompt level only, not in imported files.
+
 ### 2026-03-19 — v1.8.0 Tier-Aware Pointer Format shipped
 Implemented v1.8.0 fix for ambiguous auto-memory pointer format in BOOTSTRAP.md. Replaced flat `"See PMM memory/<file>.md"` with explicit tier-aware format: Tier 1 content (in-context, no Read needed) → `"Already in context via PMM — see <file>.md (Tier 1)"`; Tier 2 content (on-disk) → `"See PMM memory/<file>.md (Tier 2 — use Read tool)"`. Three files updated consistently: BOOTSTRAP.md (live), references/templates.md (new install template), SKILL.md (Rules section). Eliminates unnecessary pointer-triggered Read calls for in-context content. PR #33 created from local main (which held 3 unpushed commits), local main reset to origin/main, branch pushed and PR reviewed/merged via correct workflow. Demonstrates proper branch → PR → merge discipline.
 

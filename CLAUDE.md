@@ -38,6 +38,29 @@ This runs `/pmm-save` every 5 minutes, capturing session state without manual in
 
 @memory/BOOTSTRAP.md
 
+### Tier 1 — always loaded
+
+Claude Code only resolves first-level @-imports. These files are imported here (not via
+BOOTSTRAP.md) so they're guaranteed in context at session start and after /compact.
+
+@memory/config.md
+@memory/standinginstructions.md
+@memory/last.md
+@memory/progress.md
+@memory/decisions.md
+@memory/lessons.md
+@memory/preferences.md
+@memory/memory.md
+@memory/summaries.md
+@memory/voices.md
+@memory/processes.md
+@memory/timeline.md
+
+### Tier 2 — on demand
+
+Remaining memory files (graph, vectors, taxonomies, assets) live on disk.
+Load via a haiku agent when needed — see BOOTSTRAP.md for trigger conditions.
+
 ## How It Works
 
 Memory operations run in background agents — the main context window stays clean. Git commits after every update create an immutable audit trail. See `memory/config.md` for current settings.

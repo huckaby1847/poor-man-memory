@@ -1,5 +1,5 @@
 {
-  "version": "1.8.0",
+  "version": "1.9.0",
   "released": "2026-03-19",
   "upstream": "https://github.com/NominexHQ/poor-man-memory.git",
   "files": {
@@ -23,12 +23,12 @@
       "pmm/d3.v7.min.js",
       "pmm/pmm-viz-template.html",
       "pmm/version.json",
-      "CLAUDE.md",
       "README.md",
       ".gitignore"
     ],
     "merge": [
-      ".claude/settings.json"
+      ".claude/settings.json",
+      "CLAUDE.md"
     ],
     "never_touch": [
       "memory/*",

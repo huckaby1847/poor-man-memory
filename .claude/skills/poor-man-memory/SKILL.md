@@ -173,12 +173,7 @@ Replace `<skill-base>` with the actual skill base directory path.
 
 **Dispatch:** Read `memory/config.md` for `Session Start` mode (default: `lazy`) and `bootstrap_wired` status.
 
-**If `Mode: lazy` AND `bootstrap_wired: true`** — skip agent dispatch. Check `memory/config.md` for `Context Tiers` mode (default: `tiered`):
-
-- If `Mode: tiered` — Tier 1 files are already in context via @-imports (config, standinginstructions, progress, last, preferences, decisions, lessons, processes, voices). Tier 2 files (graph, vectors, taxonomies, timeline, summaries, memory, assets) are on disk but not loaded — note their availability for on-demand recall using the routing table in BOOTSTRAP.md.
-- If `Mode: all-in-context` — all active files are in context via @-imports. Absorb all files directly.
-
-In both cases, no agent dispatch needed. Tiered mode saves ~14k tokens vs all-in-context; both save significantly vs eager mode.
+**If `Mode: lazy` AND `bootstrap_wired: true`** — skip agent dispatch. Tier 1 files (config, standinginstructions, last, progress, decisions, lessons, preferences, memory, summaries, voices, processes, timeline) are loaded into context via direct @-imports in `CLAUDE.md` — always available. Tier 2 files (graph, vectors, taxonomies, assets) live on disk and are loaded on demand by a haiku agent per BOOTSTRAP.md trigger conditions. Absorb the Tier 1 file contents directly from context — no agent needed. This saves ~33k tokens per session start.
 
 **If `Mode: eager` OR `bootstrap_wired: false`** — launch a `general-purpose` agent using the `Readonly Agent Model` from config (default: `haiku`) with this prompt:
 
@@ -333,12 +328,7 @@ After commit, **run the Bootstrap Check** (see `## Bootstrap Check` below).
 
 **Check mode first:** Read `memory/config.md` for `Session Start` and `bootstrap_wired`.
 
-**If `Mode: lazy` AND `bootstrap_wired: true`** — check `Context Tiers` mode in `memory/config.md`:
-
-- If `Mode: tiered` — search Tier 1 files in context first (config, standinginstructions, progress, last, preferences, decisions, lessons, processes, voices). If the routing table points to a Tier 2 file, use the Read tool to load it on demand before searching (graph, vectors, taxonomies, timeline, summaries, memory, assets).
-- If `Mode: all-in-context` — all 16 active files are already in context. Search them directly without any Read calls.
-
-Answer from the loaded/in-context content. Cite the source file.
+**If `Mode: lazy` AND `bootstrap_wired: true`** — check Tier 1 files first (all 12 are in context via CLAUDE.md @-imports). If the answer is found in Tier 1, answer directly — no agent needed. If not found, check whether a Tier 2 file (graph, vectors, taxonomies, assets) would have the answer. If so, dispatch a haiku agent to Read only the relevant Tier 2 file(s) and return a summary to main context before answering.
 
 **Context-first search — routing table:**
 - Decisions → decisions.md
@@ -620,11 +610,34 @@ A reusable check run after `init memory`, `/pmm-save`, `/pmm-hydrate`, and `/pmm
 
 4. If user selects **Fix it now**:
    - Read `CLAUDE.md`
-   - Insert a `## Memory` section with `@memory/BOOTSTRAP.md` after the `## First Run` section:
+   - Insert the full `## Memory` section after the `## First Run` section:
      ```markdown
      ## Memory
 
      @memory/BOOTSTRAP.md
+
+     ### Tier 1 — always loaded
+
+     Claude Code only resolves first-level @-imports. These files are imported here (not via
+     BOOTSTRAP.md) so they're guaranteed in context at session start and after /compact.
+
+     @memory/config.md
+     @memory/standinginstructions.md
+     @memory/last.md
+     @memory/progress.md
+     @memory/decisions.md
+     @memory/lessons.md
+     @memory/preferences.md
+     @memory/memory.md
+     @memory/summaries.md
+     @memory/voices.md
+     @memory/processes.md
+     @memory/timeline.md
+
+     ### Tier 2 — on demand
+
+     Remaining memory files (graph, vectors, taxonomies, assets) live on disk.
+     Load via a haiku agent when needed — see BOOTSTRAP.md for trigger conditions.
      ```
    - In `memory/config.md`, replace `- bootstrap_wired: false` with `- bootstrap_wired: true` in the `## Protected Files` section
    - `git add CLAUDE.md memory/config.md && git commit -m "pmm: wire @memory/BOOTSTRAP.md into CLAUDE.md for auto-load"`
