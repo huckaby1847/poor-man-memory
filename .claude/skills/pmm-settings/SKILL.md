@@ -111,15 +111,15 @@ Use `AskUserQuestion` to present the same questions from Phase 1 of the main ski
 
 *In lazy mode, all 16 memory files are already in context — git history is only needed for entries that have been trimmed from sliding-window files (timeline.md, summaries.md). Most queries will be answered from context without any agent dispatch.*
 
-**Q14: Pre-compact hook** — Should PMM remind Claude to save before `/compact`?
-- On (default) — PreCompact hook fires before compact (non-blocking; Claude Code does not support blocking PreCompact). Claude is responsible for saving per BOOTSTRAP.md instruction.
-- Off — suppress the pre-compact hook entirely (save still instructed via BOOTSTRAP.md soft rule)
+**Q14: Pre-compact hook** — Should PMM save before `/compact`?
+- On (default) — BOOTSTRAP.md soft instruction directs Claude to save before compact (no hook required; Claude Code's PreCompact hook is non-blocking and cannot enforce this)
+- Off — suppress the pre-compact save instruction in BOOTSTRAP.md entirely
 
 **Q15: Context tiers** — How should memory files be loaded at session start?
-- Tiered (default) — Tier 1 (9 essential files) in context via @-imports; Tier 2 (7 reference files) read on demand. Saves ~14k tokens vs all-in-context.
+- Tiered (default) — Tier 1 (12 essential files) in context via @-imports; Tier 2 (4 reference files) read on demand. Saves ~14k tokens vs all-in-context.
 - All in context — all active files loaded via @-imports (pre-v1.8.0 behaviour)
 
-*Explain: Tier 1 (config, standinginstructions, progress, last, preferences, decisions, lessons, processes, voices) covers everything needed for session orientation. Tier 2 (graph, vectors, taxonomies, timeline, summaries, memory, assets) is available on demand via the Read tool when a recall query needs it.*
+*Explain: Tier 1 (config, standinginstructions, progress, last, preferences, decisions, lessons, processes, voices, memory, summaries, timeline) covers everything needed for session orientation. Tier 2 (graph, vectors, taxonomies, assets) is available on demand via the Read tool when a recall query needs it.*
 
 **Q16: Memory priority** — How should PMM interact with Claude's built-in auto-memory?
 - PMM first (default) — PMM is the primary memory system; Claude auto-memory kept minimal (skill references and feedback only)

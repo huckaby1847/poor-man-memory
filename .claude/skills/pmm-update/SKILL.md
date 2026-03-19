@@ -131,7 +131,6 @@ If user approves, dispatch a `general-purpose` agent:
 2. **Reinstall the pre-commit hook** (in case `pmm/hooks/pre-commit` was updated):
    ```bash
    cp pmm/hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
-   chmod +x pmm/hooks/pre-compact.sh pmm/hooks/post-compact-cleanup.sh 2>/dev/null || true
    ```
 
 3. **Commit**:

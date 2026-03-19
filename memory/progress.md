@@ -107,6 +107,8 @@ v1.4.0 released on GitHub with token/message overhead reduction. Repository is l
 - Tiered memory loading fix implemented (v1.9.0) — root cause: @-imports don't recurse; moved Tier 1 files to CLAUDE.md direct @-imports, kept Tier 2 on-demand via haiku agent
 - CLAUDE.md, BOOTSTRAP.md, settings.json, templates.md, SKILL.md, pmm/version.json updated for v1.9.0
 - v1.9.0 shipped via PR #34: branch v1.9.0-tiered-loading created by leith-dev, reviewed and approved by raffi-ismail, merged (squash), branch deleted, local main synced
+- README updated: settings.json code snippet with Edit/Write(memory/*) arrays; CLAUDE.md step 3 with full Tier 1 imports list; Memory Files table with Tier column (13 Tier 1, 4 Tier 2)
+- GitHub release v1.9.0 published at https://github.com/NominexHQ/poor-man-memory/releases/tag/v1.9.0
 - Review feedback captured: lazy session-start bug present since v1.5.0 — @-imports never recurse, assumption was never verified
 
 ## Next

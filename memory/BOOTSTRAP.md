@@ -37,17 +37,13 @@ and return a summary. Only load what's needed — not all 4.
 ### Tier 2 — Available On Demand
 <!-- These files are active but NOT loaded at session start.
      Use the Read tool to load them when needed for recall or query. -->
-<!-- Available: graph.md, vectors.md, taxonomies.md, timeline.md, summaries.md,
-     memory.md, assets.md -->
+<!-- Available: graph.md, vectors.md, taxonomies.md, assets.md -->
 
 ### Routing Table
 When a recall query or operation needs Tier 2 data, Read the relevant file(s):
 - Relationships → graph.md
 - Similarities/clusters → vectors.md
 - Categories/naming → taxonomies.md
-- History/events → timeline.md
-- Session rollups → summaries.md
-- Long-term facts → memory.md
 - People/tools/systems → assets.md
 
 If `memory/secrets.md` exists, note that secrets are available. Do not echo or summarise its contents.

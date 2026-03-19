@@ -247,6 +247,30 @@ Use typed relationships from references/graph-syntax.md.
 [[session-exit trigger]] → part-of → [[Explicit Save Triggers]]
 [[PR #32]] → ships → [[v1.7.1]]
 
+## v1.9.0 Tiered Memory Loading Fix
+[[v1.9.0]] → ships-with → [[Tiered Memory Loading]]
+[[v1.9.0]] → ships-with → [[README Documentation Update]]
+[[Tiered Memory Loading]] → roots-cause → [[At-import Non-Recursion in Claude Code]] <!-- @-imports don't recurse -->
+[[Tiered Memory Loading]] → splits-into → [[Tier 1 Direct Imports in CLAUDE.md]]
+[[Tiered Memory Loading]] → splits-into → [[Tier 2 On-Demand Agent Reads]]
+[[Tier 1 Direct Imports in CLAUDE.md]] → files-loaded → [[13 Core Memory Files]] <!-- always in-context, no agent -->
+[[Tier 2 On-Demand Agent Reads]] → files-lazy-loaded → [[4 Relational Memory Files]] <!-- graph, vectors, taxonomies -->
+[[13 Core Memory Files]] → includes → [[config.md]]
+[[13 Core Memory Files]] → includes → [[assets.md]]
+[[4 Relational Memory Files]] → includes → [[graph.md]]
+[[4 Relational Memory Files]] → includes → [[vectors.md]]
+[[4 Relational Memory Files]] → includes → [[taxonomies.md]]
+[[README Documentation Update]] → updates-code → [[settings.json Snippet]]
+[[README Documentation Update]] → updates-docs → [[CLAUDE.md Step 3]]
+[[README Documentation Update]] → adds-table → [[Memory Files Table with Tier Column]]
+[[Memory Files Table with Tier Column]] → shows → [[Tier 1: 13 In-Context Files]]
+[[Memory Files Table with Tier Column]] → shows → [[Tier 2: 4 On-Demand Files]]
+[[CLAUDE.md]] → moved-to → [[Merge Category in version.json]] <!-- breaking change -->
+[[CLAUDE.md]] → requires → [[Manual Update for Existing Installs]]
+[[PR #34]] → ships → [[v1.9.0]]
+[[PR #34]] → introduces → [[Breaking Change: CLAUDE.md Merge Category]]
+[[GitHub Release v1.9.0]] → published-at → [[https://github.com/NominexHQ/poor-man-memory/releases/tag/v1.9.0]]
+
 ## v1.8.0 Tier-Aware Pointer Format
 [[v1.8.0]] → ships-with → [[Tier-Aware Auto-Memory Pointers]]
 [[Tier-Aware Auto-Memory Pointers]] → replaces → [[Flat Pointer Format]] <!-- "See PMM memory/<file>.md" was ambiguous -->

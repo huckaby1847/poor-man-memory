@@ -22,10 +22,11 @@ The project being worked on IS the poor-man-memory skill itself. The user is act
 - All memory operations are dispatched via agents (subprocesses), not run in main context
 - Agents edit files only — main context handles all git commits
 - config.md controls phase behaviour: save cadence, commit behaviour, window sizes, verbosity, active file list, maintain strategy (single or tiered), readonly_model (haiku default for read-only agents), session_start mode (lazy default)
-- GitHub repo: https://github.com/NominexHQ/poor-man-memory (v1.0 shipped 2026-03-16, v1.5.0 shipped 2026-03-19 with readonly_model and lazy session_start)
+- GitHub repo: https://github.com/NominexHQ/poor-man-memory (v1.0 shipped 2026-03-16, v1.9.0 shipped 2026-03-19 with tiered memory loading fix)
 - Repository is structured as clone-and-go — not drop-in skill files
 - `pmm/` directory at project root contains user-inspectable artifacts: D3.js library, HTML template, version manifest
 - Interactive D3.js visualization: force-directed graph with type-colored nodes, search filters, time slider with git commits, cluster convex hulls
+- Tiered memory loading (v1.9.0): @-imports don't recurse in Claude Code; solution moves 13 Tier 1 core files to direct CLAUDE.md @-imports (always in-context, no agent needed) and keeps 4 Tier 2 relational files (graph.md, vectors.md, taxonomies.md) as on-demand haiku agent reads
 - Phase 2 (Session Start) uses configurable `session_start` mode: lazy (default, skips Phase 2 when bootstrap_wired: true, saves ~33k tokens) and eager (always dispatch, pre-v1.5.0 behaviour)
 - All read-only agent dispatches (Phase 2, Phase 4, pmm-query, pmm-dump, pmm-status, pmm-viz) use configurable `readonly_model` (haiku default, ~95% cheaper than Opus, ~73% cheaper than Sonnet)
 - Phase 3 Maintain supports configurable dispatch strategies: single (default, 1 agent, minimal overhead) and tiered (opt-in, 3-agent concurrent, faster for large installs)
@@ -33,6 +34,8 @@ The project being worked on IS the poor-man-memory skill itself. The user is act
 - Template-only file detection moved from dedicated agent to main context Read calls (v1.4.0 optimization)
 - Early-exit bug fix in pmm-save removed false-negatives when memory not loaded at session start; now always dispatches agent (no-op haiku dispatch when no changes, ~$0.006 cost)
 - Explicit save triggers: /pmm-save command, /pmm-query executed, /pmm-hydrate executed, config change via /pmm-settings, new decision/entity/process established, before ending the session (v1.7.1)
+- Breaking change in v1.9.0: CLAUDE.md moved from system to merge category in version.json, requires manual update for existing installs
+- Tier-aware pointer format (v1.8.0): distinguishes Tier 1 (in-context, no Read) vs Tier 2 (on-disk, Read required) to eliminate unnecessary pointer-triggered reads
 
 ## Token Economics
 

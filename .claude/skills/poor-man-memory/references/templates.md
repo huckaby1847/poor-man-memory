@@ -131,14 +131,14 @@ Run `/pmm-settings` at any time to change these.
 - lessons.md: tier-1
 - processes.md: tier-1
 - voices.md: tier-1
+- memory.md: tier-1
+- summaries.md: tier-1
+- timeline.md: tier-1
 
 ### Tier 2 (on demand)
 - graph.md: tier-2
 - vectors.md: tier-2
 - taxonomies.md: tier-2
-- timeline.md: tier-2
-- summaries.md: tier-2
-- memory.md: tier-2
 - assets.md: tier-2
 
 ## Memory Priority
@@ -152,11 +152,11 @@ Run `/pmm-settings` at any time to change these.
 
 ## Pre-Compact Hook
 
-<!-- Should PMM block /compact until memory is saved? -->
+<!-- Should PMM instruct Claude to save before /compact? -->
 - pre_compact: on
 <!-- Options: on (default) | off -->
-<!-- on: PreCompact hook fires before compact (non-blocking — Claude Code does not support blocking PreCompact); save is Claude's responsibility per BOOTSTRAP.md instruction -->
-<!-- off: suppress the pre-compact save instruction entirely -->
+<!-- on: BOOTSTRAP.md soft instruction directs Claude to save before compact. No hook involved — Claude Code's PreCompact hook is non-blocking and has been removed. -->
+<!-- off: suppress the pre-compact save instruction in BOOTSTRAP.md entirely -->
 
 ## Protected Files
 
@@ -240,17 +240,13 @@ and return a summary. Only load what's needed — not all 4.
 ### Tier 2 — Available On Demand
 <!-- These files are active but NOT loaded at session start.
      Use the Read tool to load them when needed for recall or query. -->
-<!-- Available: graph.md, vectors.md, taxonomies.md, timeline.md, summaries.md,
-     memory.md, assets.md -->
+<!-- Available: graph.md, vectors.md, taxonomies.md, assets.md -->
 
 ### Routing Table
 When a recall query or operation needs Tier 2 data, Read the relevant file(s):
 - Relationships → graph.md
 - Similarities/clusters → vectors.md
 - Categories/naming → taxonomies.md
-- History/events → timeline.md
-- Session rollups → summaries.md
-- Long-term facts → memory.md
 - People/tools/systems → assets.md
 
 If `memory/secrets.md` exists, note that secrets are available. Do not echo or summarise its contents.
