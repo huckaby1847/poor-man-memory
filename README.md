@@ -1,3 +1,7 @@
+> **PMM is now a Claude Code plugin.** Install via the NominexHQ marketplace for the best experience — auto-loading hooks, 10 skills, config-driven load strategies. See [NominexHQ/pmm-plugin](https://github.com/NominexHQ/pmm-plugin).
+>
+> This repo contains the original standalone PMM skill files. They still work but are no longer actively developed. All new features ship in the plugin.
+
 # Poor Man's Memory
 
 Persistent structured memory for Claude Code. No infrastructure required — just markdown files and git.
